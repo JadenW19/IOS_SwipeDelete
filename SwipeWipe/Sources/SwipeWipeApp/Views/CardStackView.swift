@@ -78,18 +78,30 @@ public struct CardStackView: View {
                             isTop ? DragGesture(minimumDistance: 0)
                                 .onChanged { gesture in
                                     withAnimation(.interactiveSpring(response: 0.15, dampingFraction: 0.86, blendDuration: 0.05)) {
+                                        #if os(iOS)
                                         viewModel.handleDragChanged(
                                             translation: gesture.translation,
                                             velocity: gesture.velocity
                                         )
+                                        #else
+                                        viewModel.handleDragChanged(
+                                            translation: gesture.translation
+                                        )
+                                        #endif
                                     }
                                 }
                                 .onEnded { gesture in
                                     withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
+                                        #if os(iOS)
                                         viewModel.handleDragEnded(
                                             translation: gesture.translation,
                                             velocity: gesture.velocity
                                         )
+                                        #else
+                                        viewModel.handleDragEnded(
+                                            translation: gesture.translation
+                                        )
+                                        #endif
                                     }
                                 }
                             : nil

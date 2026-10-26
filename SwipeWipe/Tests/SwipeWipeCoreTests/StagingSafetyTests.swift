@@ -8,6 +8,7 @@
 
 import XCTest
 import Foundation
+@testable import SwipeWipeCore
 
 // MARK: - Staging Safety Tests Suite
 

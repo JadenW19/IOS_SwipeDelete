@@ -68,7 +68,9 @@ public struct MainDeckContainerView: View {
                     }
                     .tag(1)
                 }
+                #if os(iOS)
                 .tabViewStyle(.page(indexDisplayMode: .never))
+                #endif
 
                 // Bottom Action Controls Bar
                 HStack(spacing: 24) {

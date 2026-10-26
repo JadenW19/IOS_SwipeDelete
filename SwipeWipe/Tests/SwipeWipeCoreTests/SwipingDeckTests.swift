@@ -9,6 +9,7 @@
 import XCTest
 import Foundation
 import CoreGraphics
+@testable import SwipeWipeCore
 
 // MARK: - Swiping Deck Tests Suite
 

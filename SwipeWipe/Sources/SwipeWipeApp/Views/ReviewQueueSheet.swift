@@ -159,14 +159,25 @@ public struct ReviewQueueSheet: View {
                 }
             }
             .navigationTitle("Review Deletions")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
+                #if os(iOS)
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
                     .font(.system(size: 16, weight: .bold))
                 }
+                #else
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .font(.system(size: 16, weight: .bold))
+                }
+                #endif
             }
             // Explicit In-App Double-Confirmation Dialog before invoking native PhotoKit API
             .confirmationDialog(
