@@ -1,0 +1,1866 @@
+{
+  "timestamp": "2026-10-26T17:51:46.619290+00:00",
+  "target": "iOS 27.0.1+ / iPhone 14 Pro",
+  "total_tests": 232,
+  "passed_tests": 232,
+  "failed_tests": 0,
+  "pass_rate": "100.0%",
+  "tests": [
+    {
+      "id": "T1_F1_1",
+      "feature": "F1",
+      "tier": "Tier 1",
+      "name": "Permission initial notDetermined status",
+      "passed": true,
+      "duration_ms": 0.021
+    },
+    {
+      "id": "T1_F1_2",
+      "feature": "F1",
+      "tier": "Tier 1",
+      "name": "Permission authorized status access",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T1_F1_3",
+      "feature": "F1",
+      "tier": "Tier 1",
+      "name": "Permission limited status access",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T1_F1_4",
+      "feature": "F1",
+      "tier": "Tier 1",
+      "name": "Permission denied status blocks buckets",
+      "passed": true,
+      "duration_ms": 0.006
+    },
+    {
+      "id": "T1_F1_5",
+      "feature": "F1",
+      "tier": "Tier 1",
+      "name": "Permission restricted status handling",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T1_F2_1",
+      "feature": "F2",
+      "tier": "Tier 1",
+      "name": "Asset model instantiation & immutability",
+      "passed": true,
+      "duration_ms": 0.023
+    },
+    {
+      "id": "T1_F2_2",
+      "feature": "F2",
+      "tier": "Tier 1",
+      "name": "Asset aspect ratio calculation",
+      "passed": true,
+      "duration_ms": 0.017
+    },
+    {
+      "id": "T1_F2_3",
+      "feature": "F2",
+      "tier": "Tier 1",
+      "name": "Lazy synthetic asset enumeration 1000 items",
+      "passed": true,
+      "duration_ms": 3.603
+    },
+    {
+      "id": "T1_F2_4",
+      "feature": "F2",
+      "tier": "Tier 1",
+      "name": "Asset model local identifier defaulting",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T1_F2_5",
+      "feature": "F2",
+      "tier": "Tier 1",
+      "name": "Asset size string formatting matches bytes",
+      "passed": true,
+      "duration_ms": 0.043
+    },
+    {
+      "id": "T1_F3_1",
+      "feature": "F3",
+      "tier": "Tier 1",
+      "name": "MonthIdentifier title generation",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T1_F3_2",
+      "feature": "F3",
+      "tier": "Tier 1",
+      "name": "MonthIdentifier chronological sorting",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T1_F3_3",
+      "feature": "F3",
+      "tier": "Tier 1",
+      "name": "Monthly bucket aggregation of asset count",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T1_F3_4",
+      "feature": "F3",
+      "tier": "Tier 1",
+      "name": "Empty bucket creation produces zero count",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T1_F3_5",
+      "feature": "F3",
+      "tier": "Tier 1",
+      "name": "Descending sort order for recent months first",
+      "passed": true,
+      "duration_ms": 0.022
+    },
+    {
+      "id": "T1_F4_1",
+      "feature": "F4",
+      "tier": "Tier 1",
+      "name": "Screenshot identified via bitmask",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T1_F4_2",
+      "feature": "F4",
+      "tier": "Tier 1",
+      "name": "Regular photo excluded from screenshot detection",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T1_F4_3",
+      "feature": "F4",
+      "tier": "Tier 1",
+      "name": "ClutterDetector isolates screenshots",
+      "passed": true,
+      "duration_ms": 0.029
+    },
+    {
+      "id": "T1_F4_4",
+      "feature": "F4",
+      "tier": "Tier 1",
+      "name": "Screenshot cluster byte aggregation",
+      "passed": true,
+      "duration_ms": 0.053
+    },
+    {
+      "id": "T1_F4_5",
+      "feature": "F4",
+      "tier": "Tier 1",
+      "name": "Empty screenshot detection on empty list",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F5_1",
+      "feature": "F5",
+      "tier": "Tier 1",
+      "name": "Burst grouping via burst identifier",
+      "passed": true,
+      "duration_ms": 0.058
+    },
+    {
+      "id": "T1_F5_2",
+      "feature": "F5",
+      "tier": "Tier 1",
+      "name": "Burst primary kept, remainder nominated as clutter",
+      "passed": true,
+      "duration_ms": 0.043
+    },
+    {
+      "id": "T1_F5_3",
+      "feature": "F5",
+      "tier": "Tier 1",
+      "name": "Temporal proximity duplicate detection (<= 2.5s)",
+      "passed": true,
+      "duration_ms": 0.081
+    },
+    {
+      "id": "T1_F5_4",
+      "feature": "F5",
+      "tier": "Tier 1",
+      "name": "Temporal gap > 2.5s not clustered as duplicates",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T1_F5_5",
+      "feature": "F5",
+      "tier": "Tier 1",
+      "name": "Duplicate cluster title and category verification",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T1_F6_1",
+      "feature": "F6",
+      "tier": "Tier 1",
+      "name": "Large video detection by duration (>= 60s)",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T1_F6_2",
+      "feature": "F6",
+      "tier": "Tier 1",
+      "name": "Large video detection by size (>= 100MB)",
+      "passed": true,
+      "duration_ms": 0.011
+    },
+    {
+      "id": "T1_F6_3",
+      "feature": "F6",
+      "tier": "Tier 1",
+      "name": "Short and small video excluded from large videos",
+      "passed": true,
+      "duration_ms": 0.008
+    },
+    {
+      "id": "T1_F6_4",
+      "feature": "F6",
+      "tier": "Tier 1",
+      "name": "Still photos excluded from video detection",
+      "passed": true,
+      "duration_ms": 0.008
+    },
+    {
+      "id": "T1_F6_5",
+      "feature": "F6",
+      "tier": "Tier 1",
+      "name": "Aggregate reclaimable size of large videos",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T1_F7_1",
+      "feature": "F7",
+      "tier": "Tier 1",
+      "name": "Mock provider records batch deletion identifiers",
+      "passed": true,
+      "duration_ms": 0.117
+    },
+    {
+      "id": "T1_F7_2",
+      "feature": "F7",
+      "tier": "Tier 1",
+      "name": "Mock provider returns deleted identifiers",
+      "passed": true,
+      "duration_ms": 0.288
+    },
+    {
+      "id": "T1_F7_3",
+      "feature": "F7",
+      "tier": "Tier 1",
+      "name": "Mock provider user cancellation simulation",
+      "passed": true,
+      "duration_ms": 0.034
+    },
+    {
+      "id": "T1_F7_4",
+      "feature": "F7",
+      "tier": "Tier 1",
+      "name": "Mock provider permission denied simulation",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T1_F7_5",
+      "feature": "F7",
+      "tier": "Tier 1",
+      "name": "Mock provider observer change notification",
+      "passed": true,
+      "duration_ms": 0.026
+    },
+    {
+      "id": "T1_F8_1",
+      "feature": "F8",
+      "tier": "Tier 1",
+      "name": "Frame budget calculation < 0.05ms per tick",
+      "passed": true,
+      "duration_ms": 4.15
+    },
+    {
+      "id": "T1_F8_2",
+      "feature": "F8",
+      "tier": "Tier 1",
+      "name": "Progress clamps between 0.0 and 1.0",
+      "passed": true,
+      "duration_ms": 0.006
+    },
+    {
+      "id": "T1_F8_3",
+      "feature": "F8",
+      "tier": "Tier 1",
+      "name": "Continuous squircle corner radius 24pt specification",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F8_4",
+      "feature": "F8",
+      "tier": "Tier 1",
+      "name": "120Hz frame period is exactly 8.33ms",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T1_F8_5",
+      "feature": "F8",
+      "tier": "Tier 1",
+      "name": "Active drag offset tracking",
+      "passed": true,
+      "duration_ms": 0.061
+    },
+    {
+      "id": "T1_F9_1",
+      "feature": "F9",
+      "tier": "Tier 1",
+      "name": "Sliding window limits visible cards to 3",
+      "passed": true,
+      "duration_ms": 0.068
+    },
+    {
+      "id": "T1_F9_2",
+      "feature": "F9",
+      "tier": "Tier 1",
+      "name": "Top card rest transform: scale 1.0, y 0.0, z 3",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T1_F9_3",
+      "feature": "F9",
+      "tier": "Tier 1",
+      "name": "Second card rest transform: scale 0.94, y 14.0, z 2",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T1_F9_4",
+      "feature": "F9",
+      "tier": "Tier 1",
+      "name": "Third card rest transform: scale 0.88, y 26.0, z 1",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T1_F9_5",
+      "feature": "F9",
+      "tier": "Tier 1",
+      "name": "Stack interpolation at 50% drag progress",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T1_F10_1",
+      "feature": "F10",
+      "tier": "Tier 1",
+      "name": "Distance threshold commit retain (dx >= 137.5)",
+      "passed": true,
+      "duration_ms": 0.081
+    },
+    {
+      "id": "T1_F10_2",
+      "feature": "F10",
+      "tier": "Tier 1",
+      "name": "Distance threshold commit stage delete (dx <= -137.5)",
+      "passed": true,
+      "duration_ms": 0.09
+    },
+    {
+      "id": "T1_F10_3",
+      "feature": "F10",
+      "tier": "Tier 1",
+      "name": "Velocity escape commit retain (vx >= 800, dx >= 35)",
+      "passed": true,
+      "duration_ms": 0.025
+    },
+    {
+      "id": "T1_F10_4",
+      "feature": "F10",
+      "tier": "Tier 1",
+      "name": "Velocity escape commit stage delete (vx <= -800, dx <= -35)",
+      "passed": true,
+      "duration_ms": 0.105
+    },
+    {
+      "id": "T1_F10_5",
+      "feature": "F10",
+      "tier": "Tier 1",
+      "name": "Sub-threshold drag snaps back to center",
+      "passed": true,
+      "duration_ms": 0.018
+    },
+    {
+      "id": "T1_F11_1",
+      "feature": "F11",
+      "tier": "Tier 1",
+      "name": "Dynamic rotation formula theta = (dx / 393) * 20",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T1_F11_2",
+      "feature": "F11",
+      "tier": "Tier 1",
+      "name": "Positive displacement produces clockwise rotation",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F11_3",
+      "feature": "F11",
+      "tier": "Tier 1",
+      "name": "Negative displacement produces counter-clockwise rotation",
+      "passed": true,
+      "duration_ms": 0.001
+    },
+    {
+      "id": "T1_F11_4",
+      "feature": "F11",
+      "tier": "Tier 1",
+      "name": "Rotation at commit threshold is exactly 7.0 degrees",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F11_5",
+      "feature": "F11",
+      "tier": "Tier 1",
+      "name": "Zero displacement yields zero rotation",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F12_1",
+      "feature": "F12",
+      "tier": "Tier 1",
+      "name": "Undo stack records swipe action",
+      "passed": true,
+      "duration_ms": 0.027
+    },
+    {
+      "id": "T1_F12_2",
+      "feature": "F12",
+      "tier": "Tier 1",
+      "name": "Undo retain restores card to index 0",
+      "passed": true,
+      "duration_ms": 0.051
+    },
+    {
+      "id": "T1_F12_3",
+      "feature": "F12",
+      "tier": "Tier 1",
+      "name": "Undo stage delete removes asset from staged queue",
+      "passed": true,
+      "duration_ms": 0.087
+    },
+    {
+      "id": "T1_F12_4",
+      "feature": "F12",
+      "tier": "Tier 1",
+      "name": "Multi-level undo restores cards in LIFO order",
+      "passed": true,
+      "duration_ms": 0.042
+    },
+    {
+      "id": "T1_F12_5",
+      "feature": "F12",
+      "tier": "Tier 1",
+      "name": "can_undo becomes false when undo stack empty",
+      "passed": true,
+      "duration_ms": 0.016
+    },
+    {
+      "id": "T1_F13_1",
+      "feature": "F13",
+      "tier": "Tier 1",
+      "name": "Haptic fires when crossing threshold",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T1_F13_2",
+      "feature": "F13",
+      "tier": "Tier 1",
+      "name": "Threshold haptic is debounced while beyond threshold",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T1_F13_3",
+      "feature": "F13",
+      "tier": "Tier 1",
+      "name": "Commit retain fires retain commit haptic",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T1_F13_4",
+      "feature": "F13",
+      "tier": "Tier 1",
+      "name": "Commit stage delete fires delete commit haptic",
+      "passed": true,
+      "duration_ms": 0.027
+    },
+    {
+      "id": "T1_F13_5",
+      "feature": "F13",
+      "tier": "Tier 1",
+      "name": "Undo fires undo haptic event",
+      "passed": true,
+      "duration_ms": 0.018
+    },
+    {
+      "id": "T1_F14_1",
+      "feature": "F14",
+      "tier": "Tier 1",
+      "name": "stageAsset increments count and running bytes",
+      "passed": true,
+      "duration_ms": 0.078
+    },
+    {
+      "id": "T1_F14_2",
+      "feature": "F14",
+      "tier": "Tier 1",
+      "name": "unstageAsset removes item and decrements stats",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T1_F14_3",
+      "feature": "F14",
+      "tier": "Tier 1",
+      "name": "contains returns true for staged ID, false otherwise",
+      "passed": true,
+      "duration_ms": 0.016
+    },
+    {
+      "id": "T1_F14_4",
+      "feature": "F14",
+      "tier": "Tier 1",
+      "name": "clearAll empties store and returns cleared list",
+      "passed": true,
+      "duration_ms": 0.031
+    },
+    {
+      "id": "T1_F14_5",
+      "feature": "F14",
+      "tier": "Tier 1",
+      "name": "Running count breakdown by media type",
+      "passed": true,
+      "duration_ms": 0.042
+    },
+    {
+      "id": "T1_F15_1",
+      "feature": "F15",
+      "tier": "Tier 1",
+      "name": "Review snapshot accurately reports formatted size",
+      "passed": true,
+      "duration_ms": 0.019
+    },
+    {
+      "id": "T1_F15_2",
+      "feature": "F15",
+      "tier": "Tier 1",
+      "name": "Empty snapshot has is_empty == true and formattedSize == 0 B",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T1_F15_3",
+      "feature": "F15",
+      "tier": "Tier 1",
+      "name": "Individual unstaging updates snapshot items list",
+      "passed": true,
+      "duration_ms": 0.037
+    },
+    {
+      "id": "T1_F15_4",
+      "feature": "F15",
+      "tier": "Tier 1",
+      "name": "SizeFormatter decimal Kilobytes formatting",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T1_F15_5",
+      "feature": "F15",
+      "tier": "Tier 1",
+      "name": "SizeFormatter decimal Gigabytes formatting",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T1_F16_1",
+      "feature": "F16",
+      "tier": "Tier 1",
+      "name": "Empty queue deletion guard returns success 0 without provider call",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T1_F16_2",
+      "feature": "F16",
+      "tier": "Tier 1",
+      "name": "Batch deletion success returns deleted count and reclaimed bytes",
+      "passed": true,
+      "duration_ms": 0.045
+    },
+    {
+      "id": "T1_F16_3",
+      "feature": "F16",
+      "tier": "Tier 1",
+      "name": "Batch deletion calls delete_assets with exact IDs",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T1_F16_4",
+      "feature": "F16",
+      "tier": "Tier 1",
+      "name": "Batch deletion records provider total call count",
+      "passed": true,
+      "duration_ms": 0.018
+    },
+    {
+      "id": "T1_F16_5",
+      "feature": "F16",
+      "tier": "Tier 1",
+      "name": "Batch deletion failure translates to FAILURE status",
+      "passed": true,
+      "duration_ms": 0.038
+    },
+    {
+      "id": "T1_F17_1",
+      "feature": "F17",
+      "tier": "Tier 1",
+      "name": "Code 3072 translates to CANCELLED_BY_USER",
+      "passed": true,
+      "duration_ms": 0.021
+    },
+    {
+      "id": "T1_F17_2",
+      "feature": "F17",
+      "tier": "Tier 1",
+      "name": "Cancellation preserves staged queue 100% intact",
+      "passed": true,
+      "duration_ms": 0.053
+    },
+    {
+      "id": "T1_F17_3",
+      "feature": "F17",
+      "tier": "Tier 1",
+      "name": "Subsequent deletion retry after cancel can succeed",
+      "passed": true,
+      "duration_ms": 0.025
+    },
+    {
+      "id": "T1_F17_4",
+      "feature": "F17",
+      "tier": "Tier 1",
+      "name": "Cancellation does not modify running counts",
+      "passed": true,
+      "duration_ms": 0.036
+    },
+    {
+      "id": "T1_F17_5",
+      "feature": "F17",
+      "tier": "Tier 1",
+      "name": "Cancellation contains exact 3072 guard verification",
+      "passed": true,
+      "duration_ms": 0.008
+    },
+    {
+      "id": "T1_F18_1",
+      "feature": "F18",
+      "tier": "Tier 1",
+      "name": "Staging favorite increments favoriteCount",
+      "passed": true,
+      "duration_ms": 0.018
+    },
+    {
+      "id": "T1_F18_2",
+      "feature": "F18",
+      "tier": "Tier 1",
+      "name": "Staging non-favorite does not increment favoriteCount",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T1_F18_3",
+      "feature": "F18",
+      "tier": "Tier 1",
+      "name": "Unstaging favorite decrements favoriteCount",
+      "passed": true,
+      "duration_ms": 0.023
+    },
+    {
+      "id": "T1_F18_4",
+      "feature": "F18",
+      "tier": "Tier 1",
+      "name": "Clear all resets favoriteCount to zero",
+      "passed": true,
+      "duration_ms": 0.021
+    },
+    {
+      "id": "T1_F18_5",
+      "feature": "F18",
+      "tier": "Tier 1",
+      "name": "Snapshot detects favorite items presence",
+      "passed": true,
+      "duration_ms": 0.031
+    },
+    {
+      "id": "T1_F19_1",
+      "feature": "F19",
+      "tier": "Tier 1",
+      "name": "Top safe area inset is 59pt for Dynamic Island clearance",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T1_F19_2",
+      "feature": "F19",
+      "tier": "Tier 1",
+      "name": "Bottom safe area inset is 34pt",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F19_3",
+      "feature": "F19",
+      "tier": "Tier 1",
+      "name": "iPhone 14 Pro screen bounds 393 x 852 pt",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F19_4",
+      "feature": "F19",
+      "tier": "Tier 1",
+      "name": "Usable vertical canvas is exactly 759pt",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T1_F19_5",
+      "feature": "F19",
+      "tier": "Tier 1",
+      "name": "Dynamic Island bottom at 47.67pt is within 59pt safe margin",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T1_F20_1",
+      "feature": "F20",
+      "tier": "Tier 1",
+      "name": "Deck enters EMPTY state when last card is processed",
+      "passed": true,
+      "duration_ms": 0.045
+    },
+    {
+      "id": "T1_F20_2",
+      "feature": "F20",
+      "tier": "Tier 1",
+      "name": "Empty deck initial state is CardDeckState.EMPTY",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T1_F20_3",
+      "feature": "F20",
+      "tier": "Tier 1",
+      "name": "Success haptic triggers upon entering empty state",
+      "passed": true,
+      "duration_ms": 0.024
+    },
+    {
+      "id": "T1_F20_4",
+      "feature": "F20",
+      "tier": "Tier 1",
+      "name": "Undo from empty state exits empty state back to IDLE",
+      "passed": true,
+      "duration_ms": 0.031
+    },
+    {
+      "id": "T1_F20_5",
+      "feature": "F20",
+      "tier": "Tier 1",
+      "name": "Retained and staged counts reflect complete processing",
+      "passed": true,
+      "duration_ms": 0.069
+    },
+    {
+      "id": "T2_F1_1",
+      "feature": "F1",
+      "tier": "Tier 2",
+      "name": "Permission revocation mid-session preserves staged items",
+      "passed": true,
+      "duration_ms": 0.027
+    },
+    {
+      "id": "T2_F1_2",
+      "feature": "F1",
+      "tier": "Tier 2",
+      "name": "Re-requesting authorization when authorized is idempotent",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T2_F1_3",
+      "feature": "F1",
+      "tier": "Tier 2",
+      "name": "Limited access with 0 assets selected handles cleanly",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T2_F1_4",
+      "feature": "F1",
+      "tier": "Tier 2",
+      "name": "Dynamic permission upgrade from limited to authorized",
+      "passed": true,
+      "duration_ms": 0.006
+    },
+    {
+      "id": "T2_F1_5",
+      "feature": "F1",
+      "tier": "Tier 2",
+      "name": "Restricted status returns empty buckets without crashing",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T2_F2_1",
+      "feature": "F2",
+      "tier": "Tier 2",
+      "name": "Zero pixel dimensions defaults aspect ratio to 1.0 (no div by zero)",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T2_F2_2",
+      "feature": "F2",
+      "tier": "Tier 2",
+      "name": "Missing creation date defaults to epoch without crashing",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F2_3",
+      "feature": "F2",
+      "tier": "Tier 2",
+      "name": "Negative byte size normalized to 0",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T2_F2_4",
+      "feature": "F2",
+      "tier": "Tier 2",
+      "name": "Extreme 108MP resolution handled without overflow",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F2_5",
+      "feature": "F2",
+      "tier": "Tier 2",
+      "name": "High volume synthetic ingestion (10,000 items in <100ms)",
+      "passed": true,
+      "duration_ms": 74.84
+    },
+    {
+      "id": "T2_F3_1",
+      "feature": "F3",
+      "tier": "Tier 2",
+      "name": "Leap year February 29 handled cleanly",
+      "passed": true,
+      "duration_ms": 0.035
+    },
+    {
+      "id": "T2_F3_2",
+      "feature": "F3",
+      "tier": "Tier 2",
+      "name": "Year boundary transition Dec 31 to Jan 1",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T2_F3_3",
+      "feature": "F3",
+      "tier": "Tier 2",
+      "name": "Single month library produces exactly 1 bucket",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F3_4",
+      "feature": "F3",
+      "tier": "Tier 2",
+      "name": "Sparse multi-year library sorting",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T2_F3_5",
+      "feature": "F3",
+      "tier": "Tier 2",
+      "name": "Zero assets in camera roll produces 0 buckets",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T2_F4_1",
+      "feature": "F4",
+      "tier": "Tier 2",
+      "name": "Mixed subtype photo (HDR + Screenshot) detected",
+      "passed": true,
+      "duration_ms": 0.038
+    },
+    {
+      "id": "T2_F4_2",
+      "feature": "F4",
+      "tier": "Tier 2",
+      "name": "Non-image video with screenshot flag not detected as image screenshot",
+      "passed": true,
+      "duration_ms": 0.014
+    },
+    {
+      "id": "T2_F4_3",
+      "feature": "F4",
+      "tier": "Tier 2",
+      "name": "Zero byte screenshot handled safely",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F4_4",
+      "feature": "F4",
+      "tier": "Tier 2",
+      "name": "Large batch of 1,000 screenshots filtered in < 10ms",
+      "passed": true,
+      "duration_ms": 10.241
+    },
+    {
+      "id": "T2_F4_5",
+      "feature": "F4",
+      "tier": "Tier 2",
+      "name": "Favorite screenshot retains favorite status in clutter list",
+      "passed": true,
+      "duration_ms": 0.031
+    },
+    {
+      "id": "T2_F5_1",
+      "feature": "F5",
+      "tier": "Tier 2",
+      "name": "Single photo in burst series treated as normal photo (not cluster)",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T2_F5_2",
+      "feature": "F5",
+      "tier": "Tier 2",
+      "name": "Rapid sequence with differing resolutions NOT grouped as duplicates",
+      "passed": true,
+      "duration_ms": 0.055
+    },
+    {
+      "id": "T2_F5_3",
+      "feature": "F5",
+      "tier": "Tier 2",
+      "name": "Chain of 10 rapid photos forms single continuous cluster",
+      "passed": true,
+      "duration_ms": 0.175
+    },
+    {
+      "id": "T2_F5_4",
+      "feature": "F5",
+      "tier": "Tier 2",
+      "name": "User favorited photo in burst protected from deletion nomination",
+      "passed": true,
+      "duration_ms": 0.059
+    },
+    {
+      "id": "T2_F5_5",
+      "feature": "F5",
+      "tier": "Tier 2",
+      "name": "Identical timestamps (dt = 0s) handled without crashing",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T2_F6_1",
+      "feature": "F6",
+      "tier": "Tier 2",
+      "name": "Slo-mo video with short duration (15s) but large size (250MB) detected",
+      "passed": true,
+      "duration_ms": 0.014
+    },
+    {
+      "id": "T2_F6_2",
+      "feature": "F6",
+      "tier": "Tier 2",
+      "name": "Zero-duration video with large size detected safely",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T2_F6_3",
+      "feature": "F6",
+      "tier": "Tier 2",
+      "name": "Massive video (45min 4K 15GB) handled with 64-bit size safety",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T2_F6_4",
+      "feature": "F6",
+      "tier": "Tier 2",
+      "name": "Boundary duration at exactly 60.0s included",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T2_F6_5",
+      "feature": "F6",
+      "tier": "Tier 2",
+      "name": "Boundary size at exactly 100,000,000 bytes included",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T2_F7_1",
+      "feature": "F7",
+      "tier": "Tier 2",
+      "name": "Simulate system error custom message propagation",
+      "passed": true,
+      "duration_ms": 0.08
+    },
+    {
+      "id": "T2_F7_2",
+      "feature": "F7",
+      "tier": "Tier 2",
+      "name": "Sequential deletion calls accumulate recorded batches",
+      "passed": true,
+      "duration_ms": 0.011
+    },
+    {
+      "id": "T2_F7_3",
+      "feature": "F7",
+      "tier": "Tier 2",
+      "name": "Mock provider thread-safety during concurrent delete calls",
+      "passed": true,
+      "duration_ms": 16.455
+    },
+    {
+      "id": "T2_F7_4",
+      "feature": "F7",
+      "tier": "Tier 2",
+      "name": "Multiple change observers receive notifications",
+      "passed": true,
+      "duration_ms": 0.033
+    },
+    {
+      "id": "T2_F7_5",
+      "feature": "F7",
+      "tier": "Tier 2",
+      "name": "Empty identifier list deletion returns true",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T2_F8_1",
+      "feature": "F8",
+      "tier": "Tier 2",
+      "name": "Extreme drag displacement (dx = 2000) clamps progress to 1.0",
+      "passed": true,
+      "duration_ms": 0.008
+    },
+    {
+      "id": "T2_F8_2",
+      "feature": "F8",
+      "tier": "Tier 2",
+      "name": "Pure vertical drag (dx = 0, dy = 100) has zero progress",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T2_F8_3",
+      "feature": "F8",
+      "tier": "Tier 2",
+      "name": "Continuous squircle fast path math validation",
+      "passed": true,
+      "duration_ms": 0.001
+    },
+    {
+      "id": "T2_F8_4",
+      "feature": "F8",
+      "tier": "Tier 2",
+      "name": "10,000 drag updates completed in < 50ms",
+      "passed": true,
+      "duration_ms": 31.136
+    },
+    {
+      "id": "T2_F8_5",
+      "feature": "F8",
+      "tier": "Tier 2",
+      "name": "Sub-pixel drag displacement (dx = 0.001) does not explode",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T2_F9_1",
+      "feature": "F9",
+      "tier": "Tier 2",
+      "name": "Deck with exactly 2 cards renders slots 0 and 1",
+      "passed": true,
+      "duration_ms": 0.053
+    },
+    {
+      "id": "T2_F9_2",
+      "feature": "F9",
+      "tier": "Tier 2",
+      "name": "Deck with exactly 1 card renders slot 0 only",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T2_F9_3",
+      "feature": "F9",
+      "tier": "Tier 2",
+      "name": "Deck with 0 cards renders empty visible cards",
+      "passed": true,
+      "duration_ms": 0.008
+    },
+    {
+      "id": "T2_F9_4",
+      "feature": "F9",
+      "tier": "Tier 2",
+      "name": "Deck with 50,000 cards only materializes 3 visible cards",
+      "passed": true,
+      "duration_ms": 348.296
+    },
+    {
+      "id": "T2_F9_5",
+      "feature": "F9",
+      "tier": "Tier 2",
+      "name": "Card 2 interpolation reaches Card 1 resting values at p = 1.0",
+      "passed": true,
+      "duration_ms": 0.032
+    },
+    {
+      "id": "T2_F10_1",
+      "feature": "F10",
+      "tier": "Tier 2",
+      "name": "Opposing velocity flick does NOT commit (dx = 50, vx = -900)",
+      "passed": true,
+      "duration_ms": 0.057
+    },
+    {
+      "id": "T2_F10_2",
+      "feature": "F10",
+      "tier": "Tier 2",
+      "name": "High velocity with displacement below minimum (dx = 20, vx = 1000) snaps back",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F10_3",
+      "feature": "F10",
+      "tier": "Tier 2",
+      "name": "Exact boundary distance (dx = 137.5) commits retain",
+      "passed": true,
+      "duration_ms": 0.044
+    },
+    {
+      "id": "T2_F10_4",
+      "feature": "F10",
+      "tier": "Tier 2",
+      "name": "Just below boundary distance (dx = 137.49) snaps back",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T2_F10_5",
+      "feature": "F10",
+      "tier": "Tier 2",
+      "name": "Negative exact boundary distance (dx = -137.5) commits stage delete",
+      "passed": true,
+      "duration_ms": 0.042
+    },
+    {
+      "id": "T2_F11_1",
+      "feature": "F11",
+      "tier": "Tier 2",
+      "name": "Rotation capped at +20 degrees for extreme right drag (dx = 1000)",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T2_F11_2",
+      "feature": "F11",
+      "tier": "Tier 2",
+      "name": "Rotation capped at -20 degrees for extreme left drag (dx = -1000)",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T2_F11_3",
+      "feature": "F11",
+      "tier": "Tier 2",
+      "name": "Rotational linearity theta(dx1) + theta(dx2) == theta(dx1 + dx2)",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T2_F11_4",
+      "feature": "F11",
+      "tier": "Tier 2",
+      "name": "Pure vertical displacement does not affect rotation",
+      "passed": true,
+      "duration_ms": 0.001
+    },
+    {
+      "id": "T2_F11_5",
+      "feature": "F11",
+      "tier": "Tier 2",
+      "name": "Rotation at 393pt is exactly 20.0 degrees",
+      "passed": true,
+      "duration_ms": 0.001
+    },
+    {
+      "id": "T2_F12_1",
+      "feature": "F12",
+      "tier": "Tier 2",
+      "name": "Undo on empty stack is a safe no-op",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T2_F12_2",
+      "feature": "F12",
+      "tier": "Tier 2",
+      "name": "Deep undo stack (500 actions) pop sequence",
+      "passed": true,
+      "duration_ms": 26.447
+    },
+    {
+      "id": "T2_F12_3",
+      "feature": "F12",
+      "tier": "Tier 2",
+      "name": "Restored asset preserves exact byte size and favorite status",
+      "passed": true,
+      "duration_ms": 0.112
+    },
+    {
+      "id": "T2_F12_4",
+      "feature": "F12",
+      "tier": "Tier 2",
+      "name": "Undoing stage delete deducts exact byte size from store",
+      "passed": true,
+      "duration_ms": 0.058
+    },
+    {
+      "id": "T2_F12_5",
+      "feature": "F12",
+      "tier": "Tier 2",
+      "name": "Interleaved swipe and undo sequence maintains integrity",
+      "passed": true,
+      "duration_ms": 0.055
+    },
+    {
+      "id": "T2_F13_1",
+      "feature": "F13",
+      "tier": "Tier 2",
+      "name": "Empty undo triggers warning haptic",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T2_F13_2",
+      "feature": "F13",
+      "tier": "Tier 2",
+      "name": "Rapid drag oscillations around threshold trigger reset cleanly",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T2_F13_3",
+      "feature": "F13",
+      "tier": "Tier 2",
+      "name": "Success haptic triggers upon empty state transition",
+      "passed": true,
+      "duration_ms": 0.012
+    },
+    {
+      "id": "T2_F13_4",
+      "feature": "F13",
+      "tier": "Tier 2",
+      "name": "Headless mock records ordered sensory log",
+      "passed": true,
+      "duration_ms": 0.013
+    },
+    {
+      "id": "T2_F13_5",
+      "feature": "F13",
+      "tier": "Tier 2",
+      "name": "Threshold not crossed on small displacement",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T2_F14_1",
+      "feature": "F14",
+      "tier": "Tier 2",
+      "name": "Duplicate staging returns false and does not duplicate bytes",
+      "passed": true,
+      "duration_ms": 0.028
+    },
+    {
+      "id": "T2_F14_2",
+      "feature": "F14",
+      "tier": "Tier 2",
+      "name": "Unstaging non-existent ID returns None safely",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T2_F14_3",
+      "feature": "F14",
+      "tier": "Tier 2",
+      "name": "Concurrent staging from 10 threads without data race",
+      "passed": true,
+      "duration_ms": 15.039
+    },
+    {
+      "id": "T2_F14_4",
+      "feature": "F14",
+      "tier": "Tier 2",
+      "name": "Zero-byte asset staging updates item count without changing byte sum",
+      "passed": true,
+      "duration_ms": 0.04
+    },
+    {
+      "id": "T2_F14_5",
+      "feature": "F14",
+      "tier": "Tier 2",
+      "name": "Staging 10,000 assets stress test in < 100ms",
+      "passed": true,
+      "duration_ms": 82.729
+    },
+    {
+      "id": "T2_F15_1",
+      "feature": "F15",
+      "tier": "Tier 2",
+      "name": "SizeFormatter exact 1000 boundary (1000 -> 1.0 KB)",
+      "passed": true,
+      "duration_ms": 0.022
+    },
+    {
+      "id": "T2_F15_2",
+      "feature": "F15",
+      "tier": "Tier 2",
+      "name": "SizeFormatter exact 1,000,000 boundary (1,000,000 -> 1.0 MB)",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T2_F15_3",
+      "feature": "F15",
+      "tier": "Tier 2",
+      "name": "SizeFormatter Terabyte scale (1,500,000,000,000 -> 1.50 TB)",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T2_F15_4",
+      "feature": "F15",
+      "tier": "Tier 2",
+      "name": "Unstaging all items individually reduces snapshot to is_empty == True",
+      "passed": true,
+      "duration_ms": 0.057
+    },
+    {
+      "id": "T2_F15_5",
+      "feature": "F15",
+      "tier": "Tier 2",
+      "name": "Negative byte calculation protected by max(0, ...)",
+      "passed": true,
+      "duration_ms": 0.005
+    },
+    {
+      "id": "T2_F16_1",
+      "feature": "F16",
+      "tier": "Tier 2",
+      "name": "Batch deletion of 1,500 items partition check",
+      "passed": true,
+      "duration_ms": 9.809
+    },
+    {
+      "id": "T2_F16_2",
+      "feature": "F16",
+      "tier": "Tier 2",
+      "name": "Provider runtime error translates to failure outcome with reason",
+      "passed": true,
+      "duration_ms": 0.072
+    },
+    {
+      "id": "T2_F16_3",
+      "feature": "F16",
+      "tier": "Tier 2",
+      "name": "Deletion failure preserves staged queue items for retry",
+      "passed": true,
+      "duration_ms": 0.07
+    },
+    {
+      "id": "T2_F16_4",
+      "feature": "F16",
+      "tier": "Tier 2",
+      "name": "Zero reclaimed bytes when all deleted items were zero bytes",
+      "passed": true,
+      "duration_ms": 0.02
+    },
+    {
+      "id": "T2_F16_5",
+      "feature": "F16",
+      "tier": "Tier 2",
+      "name": "Double-confirmation modal gating requirement",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T2_F17_1",
+      "feature": "F17",
+      "tier": "Tier 2",
+      "name": "Repeated cancellations (3 consecutive cancels) do not degrade queue",
+      "passed": true,
+      "duration_ms": 0.108
+    },
+    {
+      "id": "T2_F17_2",
+      "feature": "F17",
+      "tier": "Tier 2",
+      "name": "Cancel with favorite assets staged maintains favorite count",
+      "passed": true,
+      "duration_ms": 0.037
+    },
+    {
+      "id": "T2_F17_3",
+      "feature": "F17",
+      "tier": "Tier 2",
+      "name": "User un-stages 1 item after cancellation then re-attempts deletion",
+      "passed": true,
+      "duration_ms": 0.055
+    },
+    {
+      "id": "T2_F17_4",
+      "feature": "F17",
+      "tier": "Tier 2",
+      "name": "Other error codes (e.g. 3303) are NOT treated as user cancellation",
+      "passed": true,
+      "duration_ms": 0.018
+    },
+    {
+      "id": "T2_F17_5",
+      "feature": "F17",
+      "tier": "Tier 2",
+      "name": "Cancellation during concurrent thread reads maintains consistent snapshot",
+      "passed": true,
+      "duration_ms": 0.015
+    },
+    {
+      "id": "T2_F18_1",
+      "feature": "F18",
+      "tier": "Tier 2",
+      "name": "Staging queue with 0 favorites reports favoriteCount == 0 (no warning)",
+      "passed": true,
+      "duration_ms": 0.014
+    },
+    {
+      "id": "T2_F18_2",
+      "feature": "F18",
+      "tier": "Tier 2",
+      "name": "Queue with 100% favorites reports exact match",
+      "passed": true,
+      "duration_ms": 0.024
+    },
+    {
+      "id": "T2_F18_3",
+      "feature": "F18",
+      "tier": "Tier 2",
+      "name": "Undoing staged delete of favorite correctly restores favorite count in store",
+      "passed": true,
+      "duration_ms": 0.103
+    },
+    {
+      "id": "T2_F18_4",
+      "feature": "F18",
+      "tier": "Tier 2",
+      "name": "Burst deduplication heuristic preserves user favorite",
+      "passed": true,
+      "duration_ms": 0.051
+    },
+    {
+      "id": "T2_F18_5",
+      "feature": "F18",
+      "tier": "Tier 2",
+      "name": "Favorite status preserved through multiple swipe and undo cycles",
+      "passed": true,
+      "duration_ms": 0.056
+    },
+    {
+      "id": "T2_F19_1",
+      "feature": "F19",
+      "tier": "Tier 2",
+      "name": "Header bar positioning validates top Y >= 59pt (zero island overlap)",
+      "passed": true,
+      "duration_ms": 0.003
+    },
+    {
+      "id": "T2_F19_2",
+      "feature": "F19",
+      "tier": "Tier 2",
+      "name": "Bottom control bar positioning validates bottom Y <= 818pt",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T2_F19_3",
+      "feature": "F19",
+      "tier": "Tier 2",
+      "name": "Card presentation rect fits entirely within 759pt usable canvas",
+      "passed": true,
+      "duration_ms": 0.002
+    },
+    {
+      "id": "T2_F19_4",
+      "feature": "F19",
+      "tier": "Tier 2",
+      "name": "Logical screen aspect ratio for iPhone 14 Pro matches 393/852",
+      "passed": true,
+      "duration_ms": 0.004
+    },
+    {
+      "id": "T2_F19_5",
+      "feature": "F19",
+      "tier": "Tier 2",
+      "name": "Dynamic Island pill width 126pt centered at 196.5pt",
+      "passed": true,
+      "duration_ms": 0.001
+    },
+    {
+      "id": "T2_F20_1",
+      "feature": "F20",
+      "tier": "Tier 2",
+      "name": "Initializing deck with 0 assets immediately enters EMPTY state",
+      "passed": true,
+      "duration_ms": 0.007
+    },
+    {
+      "id": "T2_F20_2",
+      "feature": "F20",
+      "tier": "Tier 2",
+      "name": "Processing 1-asset deck transitions to EMPTY on single swipe",
+      "passed": true,
+      "duration_ms": 0.02
+    },
+    {
+      "id": "T2_F20_3",
+      "feature": "F20",
+      "tier": "Tier 2",
+      "name": "Swiping right on all items results in empty state with 0 staged items",
+      "passed": true,
+      "duration_ms": 0.035
+    },
+    {
+      "id": "T2_F20_4",
+      "feature": "F20",
+      "tier": "Tier 2",
+      "name": "Swiping left on all items results in empty state with 100% staged items",
+      "passed": true,
+      "duration_ms": 0.066
+    },
+    {
+      "id": "T2_F20_5",
+      "feature": "F20",
+      "tier": "Tier 2",
+      "name": "Empty state card stack transforms render no cards",
+      "passed": true,
+      "duration_ms": 0.009
+    },
+    {
+      "id": "T3_01",
+      "feature": "F10+F12",
+      "tier": "Tier 3",
+      "name": "Swipe Right (Keep) -> Undo restores top of deck",
+      "passed": true,
+      "duration_ms": 0.042
+    },
+    {
+      "id": "T3_02",
+      "feature": "F10+F14+F12",
+      "tier": "Tier 3",
+      "name": "Swipe Left (Stage Delete) -> Undo removes from StagedQueueStore",
+      "passed": true,
+      "duration_ms": 0.068
+    },
+    {
+      "id": "T3_03",
+      "feature": "F10+F14+F15",
+      "tier": "Tier 3",
+      "name": "Multi-swipe review snapshot count & byte breakdown match",
+      "passed": true,
+      "duration_ms": 0.065
+    },
+    {
+      "id": "T3_04",
+      "feature": "F14+F15+F16",
+      "tier": "Tier 3",
+      "name": "Unstage 1 in review drawer -> Batch delete remainder",
+      "passed": true,
+      "duration_ms": 0.054
+    },
+    {
+      "id": "T3_05",
+      "feature": "F16+F17+F14",
+      "tier": "Tier 3",
+      "name": "Batch delete cancellation (3072) preserves queue 100%",
+      "passed": true,
+      "duration_ms": 0.054
+    },
+    {
+      "id": "T3_06",
+      "feature": "F17+F16+F14",
+      "tier": "Tier 3",
+      "name": "Re-attempt deletion after cancellation succeeds and clears store",
+      "passed": true,
+      "duration_ms": 0.053
+    },
+    {
+      "id": "T3_07",
+      "feature": "F4+F10+F14",
+      "tier": "Tier 3",
+      "name": "Ingest screenshots -> Swipe left -> Staged queue screenshot count matches",
+      "passed": true,
+      "duration_ms": 0.113
+    },
+    {
+      "id": "T3_08",
+      "feature": "F5+F18",
+      "tier": "Tier 3",
+      "name": "Burst cluster with favorite preserves favorite as keep candidate",
+      "passed": true,
+      "duration_ms": 0.054
+    },
+    {
+      "id": "T3_09",
+      "feature": "F6+F14+F15",
+      "tier": "Tier 3",
+      "name": "Large video staged updates queue size and formatted GB string",
+      "passed": true,
+      "duration_ms": 0.06
+    },
+    {
+      "id": "T3_10",
+      "feature": "F8+F11+F13",
+      "tier": "Tier 3",
+      "name": "Drag beyond threshold fires rotation, progress, and threshold haptic",
+      "passed": true,
+      "duration_ms": 0.022
+    },
+    {
+      "id": "T3_11",
+      "feature": "F10+F20",
+      "tier": "Tier 3",
+      "name": "Swipe final card transitions deck to EMPTY state",
+      "passed": true,
+      "duration_ms": 0.022
+    },
+    {
+      "id": "T3_12",
+      "feature": "F20+F12",
+      "tier": "Tier 3",
+      "name": "Undo from empty state restores card to deck at IDLE state",
+      "passed": true,
+      "duration_ms": 0.025
+    },
+    {
+      "id": "T3_13",
+      "feature": "F1+F3",
+      "tier": "Tier 3",
+      "name": "Permission denied safely returns empty monthly buckets",
+      "passed": true,
+      "duration_ms": 0.01
+    },
+    {
+      "id": "T3_14",
+      "feature": "F1+F7+F3",
+      "tier": "Tier 3",
+      "name": "Permission limited with subset returns exact subset count",
+      "passed": true,
+      "duration_ms": 0.122
+    },
+    {
+      "id": "T3_15",
+      "feature": "F14+F18+F15",
+      "tier": "Tier 3",
+      "name": "Snapshot detects favorite items count in mixed staging",
+      "passed": true,
+      "duration_ms": 0.073
+    },
+    {
+      "id": "T3_16",
+      "feature": "F9+F10",
+      "tier": "Tier 3",
+      "name": "Card 1 scale interpolates during drag and rebounds on snapback",
+      "passed": true,
+      "duration_ms": 0.045
+    },
+    {
+      "id": "T3_17",
+      "feature": "F10+F8",
+      "tier": "Tier 3",
+      "name": "High velocity flick commits retain despite dx < 137.5pt",
+      "passed": true,
+      "duration_ms": 0.022
+    },
+    {
+      "id": "T3_18",
+      "feature": "F14+F16",
+      "tier": "Tier 3",
+      "name": "Clear all in store then delete invokes empty queue guard",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T3_19",
+      "feature": "F3+F10+F14",
+      "tier": "Tier 3",
+      "name": "Staged queue aggregates deletions across distinct monthly buckets",
+      "passed": true,
+      "duration_ms": 0.041
+    },
+    {
+      "id": "T3_20",
+      "feature": "F2+F14+F16",
+      "tier": "Tier 3",
+      "name": "Zero-byte asset mixed with 50MB video calculates exact reclaimed bytes",
+      "passed": true,
+      "duration_ms": 0.038
+    },
+    {
+      "id": "T3_21",
+      "feature": "F14+F17+F12",
+      "tier": "Tier 3",
+      "name": "Swipe left -> Cancel deletion -> Undo restores asset to deck",
+      "passed": true,
+      "duration_ms": 0.085
+    },
+    {
+      "id": "T3_22",
+      "feature": "F13+F10+F12",
+      "tier": "Tier 3",
+      "name": "Full sensory cycle records threshold, commit, and undo haptics",
+      "passed": true,
+      "duration_ms": 0.03
+    },
+    {
+      "id": "T4_S1",
+      "feature": "S1",
+      "tier": "Tier 4",
+      "name": "Scenario S1: End-to-End Camera Roll Ingestion (50k photos, 36 months)",
+      "passed": true,
+      "duration_ms": 0.246
+    },
+    {
+      "id": "T4_S2",
+      "feature": "S2",
+      "tier": "Tier 4",
+      "name": "Scenario S2: High-Speed 120Hz Cleaning Marathon (100 swipes, 20 undos)",
+      "passed": true,
+      "duration_ms": 1.625
+    },
+    {
+      "id": "T4_S3",
+      "feature": "S3",
+      "tier": "Tier 4",
+      "name": "Scenario S3: Heavy Clutter Purge (1k screenshots + 500 bursts + 20GB videos)",
+      "passed": true,
+      "duration_ms": 27.167
+    },
+    {
+      "id": "T4_S4",
+      "feature": "S4",
+      "tier": "Tier 4",
+      "name": "Scenario S4: System Deletion Cancellation Recovery (3072 Guard & Retry)",
+      "passed": true,
+      "duration_ms": 0.457
+    },
+    {
+      "id": "T4_S5",
+      "feature": "S5",
+      "tier": "Tier 4",
+      "name": "Scenario S5: Review Queue Granular Unstaging & Selective Batch Commit",
+      "passed": true,
+      "duration_ms": 0.186
+    },
+    {
+      "id": "T4_S6",
+      "feature": "S6",
+      "tier": "Tier 4",
+      "name": "Scenario S6: Dynamic Permission Downgrade Mid-Session (Queue Safety)",
+      "passed": true,
+      "duration_ms": 0.107
+    },
+    {
+      "id": "T4_S7",
+      "feature": "S7",
+      "tier": "Tier 4",
+      "name": "Scenario S7: Favorite Photo Protection during Deletion Sweep",
+      "passed": true,
+      "duration_ms": 0.53
+    },
+    {
+      "id": "T4_S8",
+      "feature": "S8",
+      "tier": "Tier 4",
+      "name": "Scenario S8: Complete Month Clearance to Empty State Celebration",
+      "passed": true,
+      "duration_ms": 0.577
+    },
+    {
+      "id": "T4_S9",
+      "feature": "S9",
+      "tier": "Tier 4",
+      "name": "Scenario S9: Out-of-Order Undo across Multiple Buckets",
+      "passed": true,
+      "duration_ms": 0.243
+    },
+    {
+      "id": "T4_S10",
+      "feature": "S10",
+      "tier": "Tier 4",
+      "name": "Scenario S10: Zero-Byte & Corrupted Asset Handling in Ingestion & Deletion",
+      "passed": true,
+      "duration_ms": 0.093
+    }
+  ]
+}
