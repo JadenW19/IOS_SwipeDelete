@@ -26,6 +26,15 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
 
     private let lock = NSLock()
 
+    // MARK: - Async-Safe Scoped Locking Helper
+
+    @discardableResult
+    private func withLock<T>(_ body: () throws -> T) rethrows -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return try body()
+    }
+
     // MARK: - Configurable State Stubs
 
     public var stubbedAuthorizationStatus: PhotoAuthorizationStatus
@@ -36,14 +45,10 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
 
     public var deletionMode: MockDeletionMode {
         get {
-            lock.lock()
-            defer { lock.unlock() }
-            return _deletionMode
+            withLock { _deletionMode }
         }
         set {
-            lock.lock()
-            _deletionMode = newValue
-            lock.unlock()
+            withLock { _deletionMode = newValue }
         }
     }
 
@@ -72,16 +77,12 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
     // MARK: - PhotoLibraryProviding Conformance
 
     public var authorizationStatus: PhotoAuthorizationStatus {
-        lock.lock()
-        defer { lock.unlock() }
-        return stubbedAuthorizationStatus
+        withLock { stubbedAuthorizationStatus }
     }
 
     public func requestAuthorizationStatus() async -> PhotoAuthorizationStatus {
         await applySimulatedLatency()
-        lock.lock()
-        defer { lock.unlock() }
-        return stubbedAuthorizationStatus
+        return withLock { stubbedAuthorizationStatus }
     }
 
     public func requestAuthorization() async -> PhotoAuthorizationStatus {
@@ -89,73 +90,70 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
     }
 
     public func openSettings() async {
-        lock.lock()
-        openSettingsCallCount += 1
-        lock.unlock()
+        withLock {
+            openSettingsCallCount += 1
+        }
     }
 
     public func presentLimitedLibraryPicker() async {
-        lock.lock()
-        presentPickerCallCount += 1
-        lock.unlock()
+        withLock {
+            presentPickerCallCount += 1
+        }
     }
 
     public func fetchMonthlyBuckets() async throws -> [MonthlyBucket] {
         await applySimulatedLatency()
-        lock.lock()
-        defer { lock.unlock() }
+        return withLock {
+            fetchBucketsCallCount += 1
+            guard stubbedAuthorizationStatus.canReadPhotos else {
+                return []
+            }
 
-        fetchBucketsCallCount += 1
-        guard stubbedAuthorizationStatus.canReadPhotos else {
-            return []
+            return stubbedBuckets
         }
-
-        return stubbedBuckets
     }
 
     public func fetchAssets(for bucketId: MonthIdentifier) async throws -> [PhotoAssetModel] {
         await applySimulatedLatency()
-        lock.lock()
-        defer { lock.unlock() }
+        return withLock {
+            fetchAssetsCallCount += 1
+            guard stubbedAuthorizationStatus.canReadPhotos else {
+                return []
+            }
 
-        fetchAssetsCallCount += 1
-        guard stubbedAuthorizationStatus.canReadPhotos else {
+            if let explicit = stubbedAssets[bucketId.id] {
+                return explicit
+            }
+
+            let keyAlt = "\(bucketId.year)-\(bucketId.month)"
+            if let explicitAlt = stubbedAssets[keyAlt] {
+                return explicitAlt
+            }
+
+            let keyTitle = bucketId.title
+            if let explicitTitle = stubbedAssets[keyTitle] {
+                return explicitTitle
+            }
+
+            // Fallback to searching stubbedBuckets
+            if let matchingBucket = stubbedBuckets.first(where: { $0.identifier == bucketId }) {
+                return matchingBucket.assets
+            }
+
             return []
         }
-
-        if let explicit = stubbedAssets[bucketId.id] {
-            return explicit
-        }
-
-        let keyAlt = "\(bucketId.year)-\(bucketId.month)"
-        if let explicitAlt = stubbedAssets[keyAlt] {
-            return explicitAlt
-        }
-
-        let keyTitle = bucketId.title
-        if let explicitTitle = stubbedAssets[keyTitle] {
-            return explicitTitle
-        }
-
-        // Fallback to searching stubbedBuckets
-        if let matchingBucket = stubbedBuckets.first(where: { $0.identifier == bucketId }) {
-            return matchingBucket.assets
-        }
-
-        return []
     }
 
     public func fetchClutterClusters(_ category: ClutterCategoryType) async throws -> [ClutterCluster] {
         await applySimulatedLatency()
-        lock.lock()
-        defer { lock.unlock() }
+        return withLock {
+            fetchClutterCallCount += 1
+            guard stubbedAuthorizationStatus.canReadPhotos else {
+                return []
+            }
 
-        fetchClutterCallCount += 1
-        guard stubbedAuthorizationStatus.canReadPhotos else {
-            return []
+            return stubbedClutter[category] ?? []
         }
-
-        return stubbedClutter[category] ?? []
     }
 
     public func fetchClutterCategory(_ category: ClutterCategoryType) async throws -> [PhotoAssetModel] {
@@ -175,63 +173,62 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
 
     public func deleteAssetsBatch(withIdentifiers ids: [String]) async throws -> BatchDeletionResult {
         await applySimulatedLatency()
-        lock.lock()
-        defer { lock.unlock() }
+        return try withLock {
+            totalDeletionCalls += 1
+            recordedDeletionBatches.append(ids)
 
-        totalDeletionCalls += 1
-        recordedDeletionBatches.append(ids)
-
-        guard !ids.isEmpty else {
-            return BatchDeletionResult(success: true, deletedCount: 0, reclaimedBytes: 0)
-        }
-
-        switch _deletionMode {
-        case .automaticSuccess:
-            deletedAssetIdentifiers.append(contentsOf: ids)
-
-            // Remove deleted assets from internal storage
-            for (key, assets) in stubbedAssets {
-                stubbedAssets[key] = assets.filter { !ids.contains($0.localIdentifier) }
+            guard !ids.isEmpty else {
+                return BatchDeletionResult(success: true, deletedCount: 0, reclaimedBytes: 0)
             }
 
-            stubbedBuckets = stubbedBuckets.map { bucket in
-                let remaining = bucket.assets.filter { !ids.contains($0.localIdentifier) }
-                return MonthlyBucket(
-                    identifier: bucket.identifier,
-                    assetCount: remaining.count,
-                    totalByteSizeEstimate: remaining.reduce(0) { $0 + $1.estimatedByteSize },
-                    coverAssetIdentifier: remaining.first?.localIdentifier,
-                    assets: remaining
+            switch _deletionMode {
+            case .automaticSuccess:
+                deletedAssetIdentifiers.append(contentsOf: ids)
+
+                // Remove deleted assets from internal storage
+                for (key, assets) in stubbedAssets {
+                    stubbedAssets[key] = assets.filter { !ids.contains($0.localIdentifier) }
+                }
+
+                stubbedBuckets = stubbedBuckets.map { bucket in
+                    let remaining = bucket.assets.filter { !ids.contains($0.localIdentifier) }
+                    return MonthlyBucket(
+                        identifier: bucket.identifier,
+                        assetCount: remaining.count,
+                        totalByteSizeEstimate: remaining.reduce(0) { $0 + $1.estimatedByteSize },
+                        coverAssetIdentifier: remaining.first?.localIdentifier,
+                        assets: remaining
+                    )
+                }.filter { $0.assetCount > 0 }
+
+                return BatchDeletionResult(
+                    success: true,
+                    deletedCount: ids.count,
+                    reclaimedBytes: 0,
+                    failedIdentifiers: []
                 )
-            }.filter { $0.assetCount > 0 }
 
-            return BatchDeletionResult(
-                success: true,
-                deletedCount: ids.count,
-                reclaimedBytes: 0,
-                failedIdentifiers: []
-            )
+            case .simulateUserCancelled:
+                throw NSError(
+                    domain: "PHPhotosErrorDomain",
+                    code: 3072,
+                    userInfo: [NSLocalizedDescriptionKey: "User cancelled system deletion prompt"]
+                )
 
-        case .simulateUserCancelled:
-            throw NSError(
-                domain: "PHPhotosErrorDomain",
-                code: 3072,
-                userInfo: [NSLocalizedDescriptionKey: "User cancelled system deletion prompt"]
-            )
+            case .simulatePermissionDenied:
+                throw NSError(
+                    domain: "PHPhotosErrorDomain",
+                    code: 3303,
+                    userInfo: [NSLocalizedDescriptionKey: "Photo library write permission denied"]
+                )
 
-        case .simulatePermissionDenied:
-            throw NSError(
-                domain: "PHPhotosErrorDomain",
-                code: 3303,
-                userInfo: [NSLocalizedDescriptionKey: "Photo library write permission denied"]
-            )
-
-        case .simulateSystemError(let code, let description):
-            throw NSError(
-                domain: "SwipeWipeMockDomain",
-                code: code,
-                userInfo: [NSLocalizedDescriptionKey: description]
-            )
+            case .simulateSystemError(let code, let description):
+                throw NSError(
+                    domain: "SwipeWipeMockDomain",
+                    code: code,
+                    userInfo: [NSLocalizedDescriptionKey: description]
+                )
+            }
         }
     }
 
@@ -242,23 +239,23 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
     }
 
     public func addObserver(_ observer: PhotoLibraryObserving) {
-        lock.lock()
-        defer { lock.unlock() }
-        registeredObservers.removeAll { $0.value == nil || $0.value === observer }
-        registeredObservers.append(WeakPhotoLibraryObserver(observer))
+        withLock {
+            registeredObservers.removeAll { $0.value == nil || $0.value === observer }
+            registeredObservers.append(WeakPhotoLibraryObserver(observer))
+        }
     }
 
     public func removeObserver(_ observer: PhotoLibraryObserving) {
-        lock.lock()
-        defer { lock.unlock() }
-        registeredObservers.removeAll { $0.value == nil || $0.value === observer }
+        withLock {
+            registeredObservers.removeAll { $0.value == nil || $0.value === observer }
+        }
     }
 
     public func simulateExternalChange() {
-        lock.lock()
-        registeredObservers.removeAll { $0.value == nil }
-        let currentObservers = registeredObservers.compactMap(\.value)
-        lock.unlock()
+        let currentObservers: [PhotoLibraryObserving] = withLock {
+            registeredObservers.removeAll { $0.value == nil }
+            return registeredObservers.compactMap(\.value)
+        }
 
         for observer in currentObservers {
             observer.photoLibraryDidChange()
