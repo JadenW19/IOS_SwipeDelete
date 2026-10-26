@@ -126,9 +126,9 @@ final class IngestionTests: XCTestCase {
         comp3.year = 2025; comp3.month = 12; comp3.day = 31
         let dateDec2025 = cal.date(from: comp3)!
         
-        let bucketOct = MonthIdentifier(year: 2026, month: 10)
-        let bucketSep = MonthIdentifier(year: 2026, month: 9)
-        let bucketDec = MonthIdentifier(year: 2025, month: 12)
+        let bucketOct = MonthIdentifier(date: dateOct2026, calendar: cal)
+        let bucketSep = MonthIdentifier(date: dateSep2026, calendar: cal)
+        let bucketDec = MonthIdentifier(date: dateDec2025, calendar: cal)
         
         XCTAssertTrue(bucketDec < bucketSep)
         XCTAssertTrue(bucketSep < bucketOct)
@@ -209,7 +209,7 @@ final class IngestionTests: XCTestCase {
         let burstId = "burst-xyz"
         let burst1 = PhotoAssetModel(id: "b1", burstIdentifier: burstId, representsBurst: true)
         let burst2 = PhotoAssetModel(id: "b2", burstIdentifier: burstId, representsBurst: true)
-        let burst3 = PhotoAssetModel(id: "b3", burstIdentifier: burstId, representsBurst: true, isFavorite: true)
+        let burst3 = PhotoAssetModel(id: "b3", isFavorite: true, burstIdentifier: burstId, representsBurst: true)
         
         let assets = [burst1, burst2, burst3]
         let grouped = Dictionary(grouping: assets, by: { $0.burstIdentifier })
