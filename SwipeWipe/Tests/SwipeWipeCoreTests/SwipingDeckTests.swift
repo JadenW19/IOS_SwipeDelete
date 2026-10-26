@@ -103,7 +103,7 @@ final class SwipingDeckTests: XCTestCase {
         let dxCommit: CGFloat = 138.0 // > 137.5
         let vx: CGFloat = 0.0
         
-        let shouldCommit = (abs(dxCommit) >= distanceThreshold) || (abs(vx) >= velocityThreshold && (vx > 0 == dxCommit > 0) && abs(dxCommit) >= minFlickDistance)
+        let shouldCommit = (abs(dxCommit) >= distanceThreshold) || (abs(vx) >= velocityThreshold && ((vx > 0) == (dxCommit > 0)) && abs(dxCommit) >= minFlickDistance)
         let direction: SwipeDirection? = shouldCommit ? (dxCommit > 0 ? .retain : .stageDelete) : nil
         
         XCTAssertTrue(shouldCommit)
@@ -114,7 +114,7 @@ final class SwipingDeckTests: XCTestCase {
         let dxCommit: CGFloat = -138.0 // < -137.5
         let vx: CGFloat = 0.0
         
-        let shouldCommit = (abs(dxCommit) >= distanceThreshold) || (abs(vx) >= velocityThreshold && (vx > 0 == dxCommit > 0) && abs(dxCommit) >= minFlickDistance)
+        let shouldCommit = (abs(dxCommit) >= distanceThreshold) || (abs(vx) >= velocityThreshold && ((vx > 0) == (dxCommit > 0)) && abs(dxCommit) >= minFlickDistance)
         let direction: SwipeDirection? = shouldCommit ? (dxCommit > 0 ? .retain : .stageDelete) : nil
         
         XCTAssertTrue(shouldCommit)
@@ -125,7 +125,7 @@ final class SwipingDeckTests: XCTestCase {
         let dxFlick: CGFloat = 45.0 // < 137.5, but >= 35.0
         let vxFlick: CGFloat = 950.0 // >= 800.0 pt/s
         
-        let shouldCommit = (abs(dxFlick) >= distanceThreshold) || (abs(vxFlick) >= velocityThreshold && (vxFlick > 0 == dxFlick > 0) && abs(dxFlick) >= minFlickDistance)
+        let shouldCommit = (abs(dxFlick) >= distanceThreshold) || (abs(vxFlick) >= velocityThreshold && ((vxFlick > 0) == (dxFlick > 0)) && abs(dxFlick) >= minFlickDistance)
         let direction: SwipeDirection? = shouldCommit ? (dxFlick > 0 ? .retain : .stageDelete) : nil
         
         XCTAssertTrue(shouldCommit, "Velocity flick above 800pt/s must commit even if distance is under 137.5pt")
@@ -136,7 +136,7 @@ final class SwipingDeckTests: XCTestCase {
         let dxSmall: CGFloat = 80.0 // < 137.5
         let vxSlow: CGFloat = 300.0 // < 800
         
-        let shouldCommit = (abs(dxSmall) >= distanceThreshold) || (abs(vxSlow) >= velocityThreshold && (vxSlow > 0 == dxSmall > 0) && abs(dxSmall) >= minFlickDistance)
+        let shouldCommit = (abs(dxSmall) >= distanceThreshold) || (abs(vxSlow) >= velocityThreshold && ((vxSlow > 0) == (dxSmall > 0)) && abs(dxSmall) >= minFlickDistance)
         
         XCTAssertFalse(shouldCommit, "Small displacement without velocity must rebound to center")
     }
