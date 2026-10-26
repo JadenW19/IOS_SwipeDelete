@@ -73,7 +73,7 @@ public struct PhotoCardView: View {
 
                 // Top Vignette for Decision Stamp Contrast
                 LinearGradient(
-                    colors: [Color.black.opacity(0.42), Color.clear],
+                    colors: [Color(white: 0.0, opacity: 0.42), Color(white: 0.0, opacity: 0.0)],
                     startPoint: .top,
                     endPoint: .center
                 )
@@ -135,11 +135,11 @@ public struct PhotoCardView: View {
                 HStack(alignment: .center) {
                     Text(asset.creationDate, style: .date)
                         .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(white: 1.0))
 
                     Text(asset.creationDate, style: .time)
                         .font(.system(size: 14, weight: .regular))
-                        .foregroundColor(.white.opacity(0.8))
+                        .foregroundColor(Color(white: 1.0, opacity: 0.8))
 
                     Spacer()
 
@@ -155,20 +155,20 @@ public struct PhotoCardView: View {
                     // File Size Badge
                     Text(SizeFormatter.formatDeterministic(bytes: asset.estimatedByteSize))
                         .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(white: 1.0))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 3)
-                        .background(Color.white.opacity(0.22))
+                        .background(Color(white: 1.0, opacity: 0.22))
                         .clipShape(Capsule())
 
                     // Pixel Resolution Badge
                     if asset.pixelWidth > 0 && asset.pixelHeight > 0 {
                         Text("\(asset.pixelWidth) × \(asset.pixelHeight)")
                             .font(.system(size: 12, weight: .medium, design: .monospaced))
-                            .foregroundColor(.white.opacity(0.9))
+                            .foregroundColor(Color(white: 1.0, opacity: 0.9))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 3)
-                            .background(Color.white.opacity(0.16))
+                            .background(Color(white: 1.0, opacity: 0.16))
                             .clipShape(Capsule())
                     }
 
@@ -176,7 +176,7 @@ public struct PhotoCardView: View {
                     if asset.mediaType == .video && asset.duration > 0 {
                         Text(String(format: "%.0fs", asset.duration))
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(white: 1.0))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 3)
                             .background(Color.orange.opacity(0.85))
@@ -187,7 +187,7 @@ public struct PhotoCardView: View {
                     if asset.isScreenshot {
                         Text("SCREENSHOT")
                             .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(white: 1.0))
                             .padding(.horizontal, 7)
                             .padding(.vertical, 3)
                             .background(Color.purple.opacity(0.85))
@@ -198,7 +198,7 @@ public struct PhotoCardView: View {
                     if asset.representsBurst || asset.burstIdentifier != nil {
                         Text("DUPLICATE")
                             .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(white: 1.0))
                             .padding(.horizontal, 7)
                             .padding(.vertical, 3)
                             .background(Color.blue.opacity(0.85))
@@ -210,7 +210,7 @@ public struct PhotoCardView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(
                 LinearGradient(
-                    colors: [Color.clear, Color.black.opacity(0.88)],
+                    colors: [Color(white: 0.0, opacity: 0.0), Color(white: 0.0, opacity: 0.88)],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -220,6 +220,6 @@ public struct PhotoCardView: View {
         // 24pt continuous squircle clipping conforming to Apple design standards
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
         // Static pre-baked shadow to eliminate dynamic GPU rasterization hitches during 120Hz swiping
-        .shadow(color: Color.black.opacity(0.18), radius: 14, x: 0, y: 8)
+        .shadow(color: Color(white: 0.0, opacity: 0.18), radius: 14, x: 0, y: 8)
     }
 }

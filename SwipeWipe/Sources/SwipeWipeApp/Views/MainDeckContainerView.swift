@@ -136,7 +136,7 @@ public struct MainDeckContainerView: View {
                             if reviewViewModel.snapshot.totalCount > 0 {
                                 Text("\(reviewViewModel.snapshot.totalCount)")
                                     .font(.system(size: 11, weight: .bold, design: .rounded))
-                                    .foregroundColor(.white)
+                                    .foregroundColor(Color(white: 1.0))
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
                                     .background(Color.red)

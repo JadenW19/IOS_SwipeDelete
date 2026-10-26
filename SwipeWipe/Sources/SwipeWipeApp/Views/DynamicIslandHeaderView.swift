@@ -107,7 +107,7 @@ public struct DynamicIslandHeaderView: View {
                     .clipShape(Capsule())
                     .overlay(
                         Capsule()
-                            .stroke(hasStagedItems ? Color.red.opacity(0.28) : Color.clear, lineWidth: 1)
+                            .stroke(hasStagedItems ? Color.red.opacity(0.28) : Color(white: 0.0, opacity: 0.0), lineWidth: 1)
                     )
                 }
                 .accessibilityLabel("Open Review Drawer. Total staged: \(reclaimedStorageText)")

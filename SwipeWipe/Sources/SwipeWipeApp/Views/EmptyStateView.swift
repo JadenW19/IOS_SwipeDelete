@@ -107,7 +107,7 @@ public struct EmptyStateView: View {
                         Text("Return to Library Overview")
                             .font(.system(size: 16, weight: .semibold, design: .rounded))
                     }
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(white: 1.0))
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(Color.accentColor)

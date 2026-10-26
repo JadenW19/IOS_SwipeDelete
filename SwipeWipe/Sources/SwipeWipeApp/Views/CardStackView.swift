@@ -177,6 +177,6 @@ public struct CardStackView: View {
         .padding(.vertical, 8)
         .background(.ultraThinMaterial)
         .clipShape(Capsule())
-        .shadow(color: Color.black.opacity(0.12), radius: 10, x: 0, y: 5)
+        .shadow(color: Color(white: 0.0, opacity: 0.12), radius: 10, x: 0, y: 5)
     }
 }

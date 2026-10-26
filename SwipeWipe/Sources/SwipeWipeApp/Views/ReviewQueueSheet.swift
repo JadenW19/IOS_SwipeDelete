@@ -137,14 +137,14 @@ public struct ReviewQueueSheet: View {
                             HStack(spacing: 8) {
                                 if viewModel.isDeleting {
                                     ProgressView()
-                                        .tint(.white)
+                                        .tint(Color(white: 1.0))
                                 } else {
                                     Image(systemName: "trash.fill")
                                     Text("Delete \(viewModel.snapshot.totalCount) Photos (\(viewModel.snapshot.formattedSize))")
                                 }
                             }
                             .font(.system(size: 17, weight: .bold, design: .rounded))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(white: 1.0))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
                             .background(Color.red)
@@ -229,7 +229,7 @@ public struct ReviewQueueSheet: View {
                     if item.isScreenshot {
                         Text("SHOT")
                             .font(.system(size: 8, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundColor(Color(white: 1.0))
                             .padding(.horizontal, 4)
                             .padding(.vertical, 2)
                             .background(Color.purple.opacity(0.85))
@@ -244,10 +244,10 @@ public struct ReviewQueueSheet: View {
             HStack(alignment: .bottom) {
                 Text(SizeFormatter.formatDeterministic(bytes: item.byteSize))
                     .font(.system(size: 10, weight: .semibold, design: .monospaced))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(white: 1.0))
                     .padding(.horizontal, 4)
                     .padding(.vertical, 2)
-                    .background(Color.black.opacity(0.6))
+                    .background(Color(white: 0.0, opacity: 0.6))
                     .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
 
                 Spacer()
@@ -268,14 +268,14 @@ public struct ReviewQueueSheet: View {
                 } label: {
                     Image(systemName: "arrow.uturn.backward.circle.fill")
                         .font(.system(size: 20))
-                        .foregroundColor(.white)
+                        .foregroundColor(Color(white: 1.0))
                         .background(Circle().fill(Color.blue))
                 }
             }
             .padding(6)
             .background(
                 LinearGradient(
-                    colors: [Color.clear, Color.black.opacity(0.75)],
+                    colors: [Color(white: 0.0, opacity: 0.0), Color(white: 0.0, opacity: 0.75)],
                     startPoint: .top,
                     endPoint: .bottom
                 )

@@ -39,11 +39,11 @@ extension Color {
         #else
         switch token {
         case .secondarySystemBackground:
-            self = Color.gray.opacity(0.15)
+            self = Color(white: 0.5, opacity: 0.15)
         case .tertiarySystemBackground:
-            self = Color.gray.opacity(0.10)
+            self = Color(white: 0.5, opacity: 0.10)
         default:
-            self = Color.white
+            self = Color(white: 1.0)
         }
         #endif
     }
