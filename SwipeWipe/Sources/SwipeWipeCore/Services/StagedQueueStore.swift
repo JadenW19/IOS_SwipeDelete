@@ -41,6 +41,7 @@ public final class StagedQueueStore: StagedQueueStoreProtocol, @unchecked Sendab
         )
     }
 
+    @discardableResult
     public func stageAsset(_ item: StagedAssetItem) -> Bool {
         lock.lock()
         defer { lock.unlock() }
@@ -71,6 +72,7 @@ public final class StagedQueueStore: StagedQueueStoreProtocol, @unchecked Sendab
         return true
     }
 
+    @discardableResult
     public func unstageAsset(id: String) -> StagedAssetItem? {
         lock.lock()
         defer { lock.unlock() }
@@ -101,6 +103,7 @@ public final class StagedQueueStore: StagedQueueStoreProtocol, @unchecked Sendab
         return item
     }
 
+    @discardableResult
     public func clearAll() -> [StagedAssetItem] {
         lock.lock()
         defer { lock.unlock() }
