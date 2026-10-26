@@ -1,5 +1,6 @@
 // swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
+// StrictConcurrency is enabled by default in Swift 6.0 language mode.
 
 import PackageDescription
 
@@ -25,18 +26,12 @@ let package = Package(
         .target(
             name: "SwipeWipeCore",
             dependencies: [],
-            path: "Sources/SwipeWipeCore",
-            swiftSettings: [
-                .enableUpcomingFeature("StrictConcurrency")
-            ]
+            path: "Sources/SwipeWipeCore"
         ),
         .executableTarget(
             name: "SwipeWipeApp",
             dependencies: ["SwipeWipeCore"],
-            path: "Sources/SwipeWipeApp",
-            swiftSettings: [
-                .enableUpcomingFeature("StrictConcurrency")
-            ]
+            path: "Sources/SwipeWipeApp"
         ),
         .testTarget(
             name: "SwipeWipeCoreTests",
