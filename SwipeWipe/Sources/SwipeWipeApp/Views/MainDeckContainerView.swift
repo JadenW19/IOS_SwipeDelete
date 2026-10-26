@@ -157,8 +157,8 @@ public struct MainDeckContainerView: View {
             NavigationStack {
                 List(libraryViewModel.monthlyBuckets) { bucket in
                     Button(action: {
-                        libraryViewModel.selectBucket(bucket)
                         Task {
+                            await libraryViewModel.selectBucket(bucket)
                             if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: bucket.identifier) {
                                 deckViewModel.loadCohort(assets)
                             }
@@ -187,14 +187,16 @@ public struct MainDeckContainerView: View {
                     }
                 }
                 .navigationTitle("Select Month")
+                #if os(iOS)
                 .navigationBarTitleDisplayMode(.inline)
+                #endif
             }
         }
         .task {
             await libraryViewModel.requestAuthorization()
             await libraryViewModel.fetchBuckets()
             if let first = libraryViewModel.monthlyBuckets.first {
-                libraryViewModel.selectBucket(first)
+                await libraryViewModel.selectBucket(first)
                 if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: first.identifier) {
                     deckViewModel.loadCohort(assets)
                 }

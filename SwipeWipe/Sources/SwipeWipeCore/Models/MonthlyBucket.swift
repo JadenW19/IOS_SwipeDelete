@@ -57,6 +57,7 @@ public struct MonthIdentifier: Hashable, Comparable, Sendable, Identifiable, Cod
 public struct MonthlyBucket: Identifiable, Sendable, Hashable, Codable {
     public var id: MonthIdentifier { identifier }
     public let identifier: MonthIdentifier
+    public var title: String { identifier.title }
     public let assetCount: Int
     public let totalByteSizeEstimate: Int64
     public let coverAssetIdentifier: String?

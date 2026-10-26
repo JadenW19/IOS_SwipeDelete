@@ -15,7 +15,7 @@ import os
 public final class LibraryViewModel: ObservableObject, PhotoLibraryObserving {
 
     private let logger = Logger(subsystem: "com.swipewipe.SwipeWipeCore", category: "LibraryViewModel")
-    private let photoProvider: PhotoLibraryProviding
+    public let photoProvider: any PhotoLibraryProviding
 
     // MARK: - Published State
 
@@ -34,9 +34,25 @@ public final class LibraryViewModel: ObservableObject, PhotoLibraryObserving {
     @Published public private(set) var isLoading: Bool = false
     @Published public private(set) var errorMessage: String? = nil
 
+    public struct ClutterCategorySummary: Sendable, Equatable {
+        public let assetCount: Int
+        public let totalByteSize: Int64
+    }
+
+    public var clutterCategories: [ClutterCategoryType: ClutterCategorySummary] {
+        var result: [ClutterCategoryType: ClutterCategorySummary] = [:]
+        for category in ClutterCategoryType.allCases {
+            result[category] = ClutterCategorySummary(
+                assetCount: clutterSummary[category] ?? 0,
+                totalByteSize: clutterByteSummary[category] ?? 0
+            )
+        }
+        return result
+    }
+
     // MARK: - Initialization & Teardown
 
-    public init(photoProvider: PhotoLibraryProviding) {
+    public init(photoProvider: any PhotoLibraryProviding) {
         self.photoProvider = photoProvider
         self.authorizationStatus = photoProvider.authorizationStatus
         photoProvider.addObserver(self)
@@ -89,6 +105,11 @@ public final class LibraryViewModel: ObservableObject, PhotoLibraryObserving {
     }
 
     // MARK: - Library Loading & Bucketing
+
+    /// Convenience alias for `loadLibrary()`.
+    public func fetchBuckets() async {
+        await loadLibrary()
+    }
 
     /// Ingests all monthly buckets and recalculates clutter summaries.
     public func loadLibrary() async {

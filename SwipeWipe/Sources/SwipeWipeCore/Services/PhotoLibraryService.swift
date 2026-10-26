@@ -217,6 +217,7 @@ public final class PhotoLibraryService: NSObject, PhotoLibraryProviding, @unchec
 
     // MARK: - Batch Deletion
 
+    @discardableResult
     public func deleteAssets(withIdentifiers ids: [String]) async throws -> BatchDeletionResult {
         guard !ids.isEmpty else {
             return BatchDeletionResult(success: true, deletedCount: 0, reclaimedBytes: 0)

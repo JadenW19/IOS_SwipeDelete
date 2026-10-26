@@ -103,10 +103,8 @@ public protocol PhotoLibraryProviding: Sendable {
     func fetchClutterClusters(_ category: ClutterCategoryType) async throws -> [ClutterCluster]
 
     /// Permanently deletes assets via the OS photo library confirmation batch API.
+    @discardableResult
     func deleteAssets(withIdentifiers ids: [String]) async throws -> BatchDeletionResult
-
-    /// Convenience overload returning boolean success for simpler consumer calls.
-    func deleteAssets(withIdentifiers ids: [String]) async throws -> Bool
 
     /// Loads a displayable thumbnail image asynchronously.
     func loadThumbnail(for assetId: String, targetSize: CGSize) async throws -> CGImage?
@@ -122,11 +120,6 @@ public protocol PhotoLibraryProviding: Sendable {
 public extension PhotoLibraryProviding {
     func requestAuthorization() async -> PhotoAuthorizationStatus {
         await requestAuthorizationStatus()
-    }
-
-    func deleteAssets(withIdentifiers ids: [String]) async throws -> Bool {
-        let result = try await deleteAssets(withIdentifiers: ids)
-        return result.success
     }
 
     func fetchClutterCategory(_ category: ClutterCategoryType) async throws -> [PhotoAssetModel] {

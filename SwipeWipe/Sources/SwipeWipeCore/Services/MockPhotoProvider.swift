@@ -162,11 +162,6 @@ public final class MockPhotoProvider: PhotoLibraryProviding, @unchecked Sendable
     }
 
     @discardableResult
-    public func deleteAssets(withIdentifiers ids: [String]) async throws -> Bool {
-        let result = try await deleteAssetsBatch(withIdentifiers: ids)
-        return result.success
-    }
-
     public func deleteAssets(withIdentifiers ids: [String]) async throws -> BatchDeletionResult {
         try await deleteAssetsBatch(withIdentifiers: ids)
     }
