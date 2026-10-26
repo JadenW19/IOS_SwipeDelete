@@ -14,6 +14,10 @@ import os
 import Photos
 #endif
 
+#if canImport(PhotosUI)
+import PhotosUI
+#endif
+
 #if canImport(UIKit)
 import UIKit
 #endif
@@ -75,7 +79,7 @@ public final class PhotoLibraryService: NSObject, PhotoLibraryProviding, @unchec
     }
 
     public func presentLimitedLibraryPicker() async {
-        #if canImport(Photos) && canImport(UIKit)
+        #if canImport(Photos) && canImport(PhotosUI) && canImport(UIKit)
         await MainActor.run {
             guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                   let rootVC = windowScene.windows.first?.rootViewController else {
