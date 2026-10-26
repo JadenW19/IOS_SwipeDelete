@@ -77,7 +77,7 @@ public struct MainDeckContainerView: View {
                     // Undo Button
                     Button(action: {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                            deckViewModel.undoLastSwipe()
+                            _ = deckViewModel.undoLastSwipe()
                             reviewViewModel.refresh()
                         }
                     }) {
@@ -93,7 +93,7 @@ public struct MainDeckContainerView: View {
                     // Trash Button (Swipe Left programmatic trigger)
                     Button(action: {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                            deckViewModel.swipeTopCard(direction: .stageDelete)
+                            _ = deckViewModel.swipeTopCard(direction: .stageDelete)
                             reviewViewModel.refresh()
                         }
                     }) {
@@ -109,7 +109,7 @@ public struct MainDeckContainerView: View {
                     // Keep Button (Swipe Right programmatic trigger)
                     Button(action: {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                            deckViewModel.swipeTopCard(direction: .retain)
+                            _ = deckViewModel.swipeTopCard(direction: .retain)
                         }
                     }) {
                         Image(systemName: "heart.fill")

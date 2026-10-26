@@ -255,13 +255,13 @@ public struct ReviewQueueSheet: View {
                 // Individual Unstaging Actions: Restore to Deck or Retained
                 Menu {
                     Button(action: {
-                        viewModel.unstageToRetained(id: item.id)
+                        _ = viewModel.unstageToRetained(id: item.id)
                     }) {
                         Label("Restore to Kept (Retain)", systemImage: "heart.fill")
                     }
 
                     Button(action: {
-                        viewModel.unstageToDeck(id: item.id)
+                        _ = viewModel.unstageToDeck(id: item.id)
                     }) {
                         Label("Restore to Deck", systemImage: "arrow.uturn.backward")
                     }

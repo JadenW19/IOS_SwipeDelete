@@ -93,12 +93,12 @@ public struct CardStackView: View {
                                 .onEnded { gesture in
                                     withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
                                         #if os(iOS)
-                                        viewModel.handleDragEnded(
+                                        _ = viewModel.handleDragEnded(
                                             translation: gesture.translation,
                                             velocity: gesture.velocity
                                         )
                                         #else
-                                        viewModel.handleDragEnded(
+                                        _ = viewModel.handleDragEnded(
                                             translation: gesture.translation
                                         )
                                         #endif
@@ -128,7 +128,7 @@ public struct CardStackView: View {
             // Undo Button (Restores last swiped card in LIFO order)
             Button(action: {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                    viewModel.undoLastSwipe()
+                    _ = viewModel.undoLastSwipe()
                 }
             }) {
                 Image(systemName: "arrow.uturn.backward")
@@ -144,7 +144,7 @@ public struct CardStackView: View {
             // Trash Button (Programmatic Swipe Left / Stage Delete)
             Button(action: {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                    viewModel.swipeTopCard(direction: .stageDelete)
+                    _ = viewModel.swipeTopCard(direction: .stageDelete)
                 }
             }) {
                 Image(systemName: "trash.fill")
@@ -160,7 +160,7 @@ public struct CardStackView: View {
             // Keep Button (Programmatic Swipe Right / Retain)
             Button(action: {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
-                    viewModel.swipeTopCard(direction: .retain)
+                    _ = viewModel.swipeTopCard(direction: .retain)
                 }
             }) {
                 Image(systemName: "heart.fill")
