@@ -9,9 +9,11 @@ mathematical algorithms, gesture physics, and safety mechanisms.
 import os
 import re
 import math
+import sys
 from datetime import datetime, timezone, timedelta
 
-WORKSPACE = r"c:\Users\jzlwi\Documents\antigravity\magical-bohr\SwipeWipe"
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+WORKSPACE = os.path.join(REPO_ROOT, "SwipeWipe")
 
 EXPECTED_FILES = [
     # Package manifest
@@ -180,10 +182,10 @@ def test_full_test_runner_execution():
     print("[8/8] Executing the 232-test headless verification runner...")
     import subprocess
     result = subprocess.run(
-        ["python", "tests/verify_suite.py"],
+        [sys.executable, os.path.join(REPO_ROOT, "tests", "verify_suite.py")],
         capture_output=True,
         text=True,
-        cwd=r"c:\Users\jzlwi\Documents\antigravity\magical-bohr"
+        cwd=REPO_ROOT
     )
     assert result.returncode == 0, f"verify_suite.py failed with returncode {result.returncode}:\n{result.stderr}"
     assert "TOTAL EXECUTED : 232 test cases" in result.stdout
