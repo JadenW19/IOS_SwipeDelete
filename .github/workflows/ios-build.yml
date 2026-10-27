@@ -58,11 +58,22 @@ jobs:
       - name: Package iOS App (.ipa)
         run: |
           mkdir -p build/Payload/SwipeWipe.app
-          BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "\.build/" | grep -i "arm64-apple-ios" | grep -i "release" | head -n 1)
-          if [ -z "$BIN_PATH" ]; then
-            BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "\.build/" | head -n 1)
+          echo "All SwipeWipeApp files in .build:"
+          find ./SwipeWipe/.build -type f -name "SwipeWipeApp"
+
+          # Select binary while filtering out .dSYM debug symbols and intermediate .build directories
+          BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "SwipeWipeApp\.build" | head -n 1)
+
+          if [ -z "$BIN_PATH" ] || [ ! -f "$BIN_PATH" ]; then
+            for f in $(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM"); do
+              if file "$f" | grep -q "executable"; then
+                BIN_PATH="$f"
+                break
+              fi
+            done
           fi
-          echo "Found binary at: $BIN_PATH"
+
+          echo "Selected binary: $BIN_PATH"
           file "$BIN_PATH"
           cp "$BIN_PATH" build/Payload/SwipeWipe.app/SwipeWipe
           chmod +x build/Payload/SwipeWipe.app/SwipeWipe
