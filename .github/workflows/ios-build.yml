@@ -58,11 +58,12 @@ jobs:
       - name: Package iOS App (.ipa)
         run: |
           mkdir -p build/Payload/SwipeWipe.app
-          BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -i "arm64-apple-ios" | grep -i "release" | head -n 1)
+          BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "\.build/" | grep -i "arm64-apple-ios" | grep -i "release" | head -n 1)
           if [ -z "$BIN_PATH" ]; then
-            BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | head -n 1)
+            BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "\.build/" | head -n 1)
           fi
           echo "Found binary at: $BIN_PATH"
+          file "$BIN_PATH"
           cp "$BIN_PATH" build/Payload/SwipeWipe.app/SwipeWipe
           chmod +x build/Payload/SwipeWipe.app/SwipeWipe
           cp SwipeWipe/Sources/SwipeWipeApp/Info.plist build/Payload/SwipeWipe.app/Info.plist
