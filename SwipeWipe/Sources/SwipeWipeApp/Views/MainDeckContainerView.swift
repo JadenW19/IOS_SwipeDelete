@@ -30,6 +30,16 @@ public struct MainDeckContainerView: View {
         OnThisDay.assets(in: libraryViewModel.monthlyBuckets, on: Date())
     }
 
+    private var onThisDayKey: String {
+        OnThisDay.completionKey(for: Date())
+    }
+
+    private var todaySubtitle: String {
+        let f = DateFormatter()
+        f.dateFormat = "MMMM d"
+        return f.string(from: Date())
+    }
+
     private func loadCohort(_ assets: [PhotoAssetModel], key: String?, title: String?) {
         currentCohortKey = assets.isEmpty ? nil : key
         currentCohortTitle = title
@@ -65,47 +75,16 @@ public struct MainDeckContainerView: View {
                     reclaimedStorageText: deckViewModel.stagingStore.snapshot.formattedSize,
                     onSelectMonth: {
                         isPresentingMonthPicker = true
+                    },
+                    onOpenReviewDrawer: {
+                        isPresentingReviewSheet = true
                     }
                 )
+                .zIndex(10)
 
-                // Main Swiping Deck or Clutter Hub
-                Picker("Section", selection: $selectedTab) {
-                    Text("Deck").tag(0)
-                    Text("Clutter").tag(1)
-                    Text("On This Day").tag(2)
-                }
-                .pickerStyle(.segmented)
-                .padding(.horizontal, 20)
-                .padding(.bottom, 8)
-
-                Group {
-                    switch selectedTab {
-                    case 0:
-                        CardStackView(viewModel: deckViewModel)
-                    case 1:
-
-                        ClutterHubView(libraryViewModel: libraryViewModel) { category in
-                        Task {
-                            if let assets = try? await libraryViewModel.photoProvider.fetchClutterCategory(category) {
-                                loadCohort(assets, key: nil, title: category.rawValue)
-                                selectedTab = 0
-                            }
-                        }
-                        }
-                    default:
-                        OnThisDayView(
-                        assets: onThisDayAssets,
-                        isCompleted: completedKeys.contains(OnThisDay.completionKey(for: Date()))
-                    ) {
-                        loadCohort(
-                            onThisDayAssets,
-                            key: OnThisDay.completionKey(for: Date()),
-                            title: "On This Day"
-                        )
-                        selectedTab = 0
-                        }
-                    }
-                }
+                // Clean Main Swiping Deck
+                CardStackView(viewModel: deckViewModel)
+                    .zIndex(1)
 
                 // Bottom Action Controls Bar
                 HStack(spacing: 24) {
@@ -183,53 +162,14 @@ public struct MainDeckContainerView: View {
                 }
                 .padding(.horizontal, 28)
                 .padding(.bottom, 24)
+                .zIndex(10)
             }
         }
         .sheet(isPresented: $isPresentingReviewSheet) {
             ReviewQueueSheet(viewModel: reviewViewModel)
         }
         .sheet(isPresented: $isPresentingMonthPicker) {
-            NavigationStack {
-                List(libraryViewModel.monthlyBuckets) { bucket in
-                    Button(action: {
-                        Task {
-                            await libraryViewModel.selectBucket(bucket)
-                            if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: bucket.identifier) {
-                                loadCohort(assets, key: OnThisDay.completionKey(for: bucket.identifier), title: bucket.title)
-                            }
-                        }
-                        isPresentingMonthPicker = false
-                    }) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text(bucket.title)
-                                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                                    .foregroundColor(.primary)
-
-                                Text("\(bucket.assetCount) photos • \(SizeFormatter.formatDeterministic(bytes: bucket.totalByteSizeEstimate))")
-                                    .font(.system(size: 13, design: .monospaced))
-                                    .foregroundColor(.secondary)
-                            }
-
-                            Spacer()
-
-                            if completedKeys.contains(OnThisDay.completionKey(for: bucket.identifier)) {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundColor(.green)
-                                    .font(.system(size: 16, weight: .bold))
-                            } else if libraryViewModel.selectedBucket?.id == bucket.id {
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.accentColor)
-                                    .font(.system(size: 14, weight: .bold))
-                            }
-                        }
-                    }
-                }
-                .navigationTitle("Select Month")
-                #if os(iOS)
-                .navigationBarTitleDisplayMode(.inline)
-                #endif
-            }
+            cohortSelectorSheet
         }
         // Keep the review queue (staged count / size) in sync with swipes made by gesture.
         .onChange(of: deckViewModel.undoStack.count) { _, _ in
@@ -253,6 +193,154 @@ public struct MainDeckContainerView: View {
                 }
             }
             await OnThisDayNotifier.scheduleUpcoming(buckets: libraryViewModel.monthlyBuckets)
+        }
+    }
+
+    // MARK: - Unified Cohort / Memories / Clutter Selector Sheet
+
+    private var cohortSelectorSheet: some View {
+        NavigationStack {
+            List {
+                // Section 1: On This Day
+                Section("Memories") {
+                    Button(action: {
+                        loadCohort(onThisDayAssets, key: onThisDayKey, title: "On This Day")
+                        isPresentingMonthPicker = false
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "calendar.badge.clock")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.orange)
+                                .frame(width: 32)
+
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("On This Day (\(todaySubtitle))")
+                                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                                    .foregroundColor(.primary)
+
+                                Text(onThisDayAssets.isEmpty
+                                    ? "No photos from earlier years today"
+                                    : "\(onThisDayAssets.count) photos to look back on today")
+                                    .font(.system(size: 13, design: .monospaced))
+                                    .foregroundColor(.secondary)
+                            }
+
+                            Spacer()
+
+                            if completedKeys.contains(onThisDayKey) {
+                                Image(systemName: "checkmark.seal.fill")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 16, weight: .bold))
+                            } else if currentCohortKey == onThisDayKey {
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.accentColor)
+                                    .font(.system(size: 14, weight: .bold))
+                            }
+                        }
+                    }
+                    .disabled(onThisDayAssets.isEmpty)
+                }
+
+                // Section 2: Clutter Categories
+                Section("Clutter Cleaner") {
+                    clutterRow(type: .screenshots, title: "Screenshots", icon: "camera.viewfinder", color: .purple)
+                    clutterRow(type: .duplicates, title: "Similar & Duplicates", icon: "square.on.square", color: .blue)
+                    clutterRow(type: .largeVideos, title: "Large Videos", icon: "video.fill", color: .orange)
+                    clutterRow(type: .bursts, title: "Burst Photos", icon: "square.stack.3d.down.right.fill", color: .indigo)
+                }
+
+                // Section 3: Monthly Cohorts
+                Section("By Month") {
+                    ForEach(libraryViewModel.monthlyBuckets) { bucket in
+                        let bucketKey = OnThisDay.completionKey(for: bucket.identifier)
+                        Button(action: {
+                            Task {
+                                await libraryViewModel.selectBucket(bucket)
+                                if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: bucket.identifier) {
+                                    loadCohort(assets, key: bucketKey, title: bucket.title)
+                                }
+                            }
+                            isPresentingMonthPicker = false
+                        }) {
+                            HStack {
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(bucket.title)
+                                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                                        .foregroundColor(.primary)
+
+                                    Text("\(bucket.assetCount) photos • \(SizeFormatter.formatDeterministic(bytes: bucket.totalByteSizeEstimate))")
+                                        .font(.system(size: 13, design: .monospaced))
+                                        .foregroundColor(.secondary)
+                                }
+
+                                Spacer()
+
+                                if completedKeys.contains(bucketKey) {
+                                    Image(systemName: "checkmark.seal.fill")
+                                        .foregroundColor(.green)
+                                        .font(.system(size: 16, weight: .bold))
+                                } else if currentCohortKey == bucketKey {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.accentColor)
+                                        .font(.system(size: 14, weight: .bold))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Select Deck")
+            #if os(iOS)
+            .navigationBarTitleDisplayMode(.inline)
+            #endif
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Done") {
+                        isPresentingMonthPicker = false
+                    }
+                    .font(.system(size: 16, weight: .bold))
+                }
+            }
+        }
+    }
+
+    private func clutterRow(type: ClutterCategoryType, title: String, icon: String, color: Color) -> some View {
+        let summary = libraryViewModel.clutterCategories[type]
+        let count = summary?.assetCount ?? 0
+        let bytes = summary?.totalByteSize ?? 0
+
+        return Button(action: {
+            Task {
+                if let assets = try? await libraryViewModel.photoProvider.fetchClutterCategory(type) {
+                    loadCohort(assets, key: nil, title: title)
+                }
+            }
+            isPresentingMonthPicker = false
+        }) {
+            HStack(spacing: 12) {
+                Image(systemName: icon)
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(color)
+                    .frame(width: 32)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundColor(.primary)
+
+                    Text("\(count) items • \(SizeFormatter.formatDeterministic(bytes: bytes))")
+                        .font(.system(size: 13, design: .monospaced))
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                if currentCohortTitle == title {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.accentColor)
+                        .font(.system(size: 14, weight: .bold))
+                }
+            }
         }
     }
 }
