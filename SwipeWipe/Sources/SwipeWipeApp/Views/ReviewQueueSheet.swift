@@ -209,15 +209,10 @@ public struct ReviewQueueSheet: View {
         ZStack(alignment: .bottom) {
             // Background Thumbnail Placeholder
             ZStack(alignment: .topTrailing) {
-                Color(.secondarySystemBackground)
-
-                VStack(spacing: 6) {
-                    Spacer()
-                    Image(systemName: item.mediaType == .video ? "video.fill" : "photo.fill")
-                        .font(.system(size: 28))
-                        .foregroundColor(.secondary.opacity(0.8))
-                    Spacer()
-                }
+                AssetThumbnailView(
+                    localIdentifier: item.localIdentifier,
+                    isVideo: item.mediaType == .video
+                )
 
                 // Top Media Subtype Badges
                 HStack(spacing: 4) {

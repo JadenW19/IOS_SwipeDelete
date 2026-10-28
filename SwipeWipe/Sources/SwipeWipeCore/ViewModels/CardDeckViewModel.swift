@@ -268,6 +268,8 @@ public final class CardDeckViewModel: ObservableObject {
                     id: unstaged.id,
                     localIdentifier: unstaged.localIdentifier,
                     creationDate: unstaged.creationDate,
+                    mediaType: unstaged.mediaType == .video ? .video : .image,
+                    mediaSubtypes: unstaged.isScreenshot ? [.photoScreenshot] : [],
                     estimatedByteSize: unstaged.byteSize,
                     isFavorite: unstaged.isFavorite
                 )

@@ -178,7 +178,63 @@ struct AssetMediaView: View {
     }
 }
 
+// MARK: - Small thumbnail (review queue grid, etc.)
+
+struct AssetThumbnailView: View {
+    let localIdentifier: String
+    let isVideo: Bool
+
+    @Environment(\.photoProvider) private var provider
+    @State private var image: CGImage?
+
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack {
+                Color(.secondarySystemBackground)
+
+                if let image {
+                    Image(decorative: image, scale: 1.0, orientation: .up)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: proxy.size.width, height: proxy.size.height)
+                        .clipped()
+                } else {
+                    Image(systemName: isVideo ? "video.fill" : "photo.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.secondary.opacity(0.8))
+                }
+
+                if isVideo {
+                    Image(systemName: "play.circle.fill")
+                        .font(.system(size: 26))
+                        .foregroundColor(.white.opacity(0.85))
+                        .shadow(radius: 4)
+                }
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .task(id: localIdentifier) {
+                guard let provider else { return }
+                let scale = UIScreen.main.scale
+                let target = CGSize(width: 200 * scale, height: 240 * scale)
+                image = try? await provider.loadThumbnail(for: localIdentifier, targetSize: target)
+            }
+        }
+    }
+}
+
 #else
+
+struct AssetThumbnailView: View {
+    let localIdentifier: String
+    let isVideo: Bool
+
+    var body: some View {
+        ZStack {
+            Color.gray.opacity(0.2)
+            Image(systemName: isVideo ? "video.fill" : "photo.fill")
+        }
+    }
+}
 
 // Non-iOS fallback (macOS builds of the package): placeholder only.
 extension EnvironmentValues {
@@ -204,3 +260,4 @@ struct AssetMediaView: View {
 }
 
 #endif
+
