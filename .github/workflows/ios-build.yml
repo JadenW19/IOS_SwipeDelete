@@ -48,40 +48,34 @@ jobs:
         working-directory: ./SwipeWipe
         run: swift test
 
-      - name: Compile Release Binary for iOS Device (arm64)
-        working-directory: ./SwipeWipe
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build iOS App Bundle (device, unsigned)
         run: |
-          SDK_PATH=$(xcrun --sdk iphoneos --show-sdk-path)
-          echo "Using iPhoneOS SDK: $SDK_PATH"
-          swift build -c release --triple arm64-apple-ios17.0 --sdk "$SDK_PATH"
+          xcodebuild build \
+            -project SwipeWipe.xcodeproj \
+            -scheme SwipeWipe \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY=""
 
       - name: Package iOS App (.ipa)
         run: |
-          mkdir -p build/Payload/SwipeWipe.app
-          echo "All SwipeWipeApp files in .build:"
-          find ./SwipeWipe/.build -type f -name "SwipeWipeApp"
-
-          # Select binary while filtering out .dSYM debug symbols and intermediate .build directories
-          BIN_PATH=$(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM" | grep -v "SwipeWipeApp\.build" | head -n 1)
-
-          if [ -z "$BIN_PATH" ] || [ ! -f "$BIN_PATH" ]; then
-            for f in $(find ./SwipeWipe/.build -type f -name "SwipeWipeApp" | grep -v -i "\.dSYM"); do
-              if file "$f" | grep -q "executable"; then
-                BIN_PATH="$f"
-                break
-              fi
-            done
-          fi
-
-          echo "Selected binary: $BIN_PATH"
-          file "$BIN_PATH"
-          cp "$BIN_PATH" build/Payload/SwipeWipe.app/SwipeWipe
-          chmod +x build/Payload/SwipeWipe.app/SwipeWipe
-          cp SwipeWipe/Sources/SwipeWipeApp/Info.plist build/Payload/SwipeWipe.app/Info.plist
+          APP=build/DerivedData/Build/Products/Release-iphoneos/SwipeWipe.app
+          test -d "$APP"
+          file "$APP/SwipeWipe"
+          plutil -p "$APP/Info.plist"
+          mkdir -p build/Payload
+          cp -R "$APP" build/Payload/
           cd build
-          zip -r SwipeWipe.ipa Payload
+          zip -qry SwipeWipe.ipa Payload
           ls -lh SwipeWipe.ipa
-
       - name: Upload IPA Artifact for Sideloading
         uses: actions/upload-artifact@v4
         with:
