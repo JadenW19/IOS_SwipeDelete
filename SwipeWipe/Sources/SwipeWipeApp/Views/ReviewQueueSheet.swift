@@ -158,6 +158,7 @@ public struct ReviewQueueSheet: View {
                     .background(Color(.systemBackground))
                 }
             }
+            .onAppear { viewModel.refresh() }
             .navigationTitle("Review Deletions")
             #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)

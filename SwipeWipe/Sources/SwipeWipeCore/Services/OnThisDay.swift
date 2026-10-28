@@ -81,3 +81,4 @@ public final class CompletionStore: @unchecked Sendable {
         return Set(defaults.stringArray(forKey: storageKey) ?? [])
     }
 }
+

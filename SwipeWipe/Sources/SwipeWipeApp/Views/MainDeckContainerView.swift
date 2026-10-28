@@ -62,31 +62,38 @@ public struct MainDeckContainerView: View {
                 DynamicIslandHeaderView(
                     title: currentCohortTitle ?? libraryViewModel.selectedBucket?.title ?? "Photos",
                     progressText: "\(deckViewModel.cards.count) remaining",
-                    reclaimedStorageText: reviewViewModel.snapshot.formattedSize,
+                    reclaimedStorageText: deckViewModel.stagingStore.snapshot.formattedSize,
                     onSelectMonth: {
                         isPresentingMonthPicker = true
                     }
                 )
 
                 // Main Swiping Deck or Clutter Hub
-                TabView(selection: $selectedTab) {
-                    // Tab 0: Monthly Deck
-                    CardStackView(viewModel: deckViewModel)
-                        .tag(0)
+                Picker("Section", selection: $selectedTab) {
+                    Text("Deck").tag(0)
+                    Text("Clutter").tag(1)
+                    Text("On This Day").tag(2)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 8)
 
-                    // Tab 1: Clutter Hub
-                    ClutterHubView(libraryViewModel: libraryViewModel) { category in
+                Group {
+                    switch selectedTab {
+                    case 0:
+                        CardStackView(viewModel: deckViewModel)
+                    case 1:
+
+                        ClutterHubView(libraryViewModel: libraryViewModel) { category in
                         Task {
                             if let assets = try? await libraryViewModel.photoProvider.fetchClutterCategory(category) {
                                 loadCohort(assets, key: nil, title: category.rawValue)
                                 selectedTab = 0
                             }
                         }
-                    }
-                    .tag(1)
-
-                    // Tab 2: On This Day
-                    OnThisDayView(
+                        }
+                    default:
+                        OnThisDayView(
                         assets: onThisDayAssets,
                         isCompleted: completedKeys.contains(OnThisDay.completionKey(for: Date()))
                     ) {
@@ -96,12 +103,9 @@ public struct MainDeckContainerView: View {
                             title: "On This Day"
                         )
                         selectedTab = 0
+                        }
                     }
-                    .tag(2)
                 }
-                #if os(iOS)
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                #endif
 
                 // Bottom Action Controls Bar
                 HStack(spacing: 24) {
@@ -164,8 +168,8 @@ public struct MainDeckContainerView: View {
                                 .background(Color.accentColor.opacity(0.12))
                                 .clipShape(Circle())
 
-                            if reviewViewModel.snapshot.totalCount > 0 {
-                                Text("\(reviewViewModel.snapshot.totalCount)")
+                            if deckViewModel.stagingStore.snapshot.totalCount > 0 {
+                                Text("\(deckViewModel.stagingStore.snapshot.totalCount)")
                                     .font(.system(size: 11, weight: .bold, design: .rounded))
                                     .foregroundColor(Color(white: 1.0))
                                     .padding(.horizontal, 6)
