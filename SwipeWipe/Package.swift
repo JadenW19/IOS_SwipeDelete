@@ -26,12 +26,14 @@ let package = Package(
         .target(
             name: "SwipeWipeCore",
             dependencies: [],
-            path: "Sources/SwipeWipeCore"
+            path: "Sources/SwipeWipeCore",
+            swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .executableTarget(
             name: "SwipeWipeApp",
             dependencies: ["SwipeWipeCore"],
-            path: "Sources/SwipeWipeApp"
+            path: "Sources/SwipeWipeApp",
+            swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
             name: "SwipeWipeCoreTests",

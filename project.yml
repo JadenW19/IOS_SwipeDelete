@@ -24,7 +24,7 @@ targets:
         INFOPLIST_FILE: SwipeWipe/Sources/SwipeWipeApp/Info.plist
         GENERATE_INFOPLIST_FILE: NO
         TARGETED_DEVICE_FAMILY: "1"
-        SWIFT_VERSION: "6.0"
+        SWIFT_VERSION: "5.0"
         MARKETING_VERSION: "1.0.0"
         CURRENT_PROJECT_VERSION: "1"
         CODE_SIGNING_ALLOWED: NO
