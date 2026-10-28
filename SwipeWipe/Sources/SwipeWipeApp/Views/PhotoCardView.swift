@@ -60,16 +60,12 @@ public struct PhotoCardView: View {
             ZStack {
                 Color(.secondarySystemBackground)
 
-                // Placeholder / Cached downsampled photo preview
-                VStack(spacing: 12) {
-                    Image(systemName: asset.mediaType == .video ? "video.fill" : "photo.fill")
-                        .font(.system(size: 64, weight: .light))
-                        .foregroundColor(Color.accentColor.opacity(0.8))
-
-                    Text(asset.id)
-                        .font(.system(size: 15, weight: .medium, design: .monospaced))
-                        .foregroundColor(.secondary)
-                }
+                // Real photo / video media (loaded via PhotoKit)
+                AssetMediaView(
+                    asset: asset,
+                    isTopCard: isTopCard,
+                    size: CGSize(width: cardWidth, height: cardHeight)
+                )
 
                 // Top Vignette for Decision Stamp Contrast
                 LinearGradient(

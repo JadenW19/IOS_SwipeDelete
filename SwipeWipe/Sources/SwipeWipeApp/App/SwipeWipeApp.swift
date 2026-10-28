@@ -107,6 +107,7 @@ public struct SwipeWipeApp: App {
                 stagingStore: stagingStore,
                 haptics: haptics
             )
+            .environment(\.photoProvider, photoProvider)
             .environmentObject(libraryViewModel)
             .environmentObject(cardDeckViewModel)
             .environmentObject(reviewQueueViewModel)
