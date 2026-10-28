@@ -295,7 +295,7 @@ public final class PhotoLibraryService: NSObject, PhotoLibraryProviding, @unchec
             PHImageManager.default().requestImage(
                 for: phAsset,
                 targetSize: targetSize,
-                contentMode: .aspectFill,
+                contentMode: .aspectFit,
                 options: options
             ) { image, info in
                 let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? (info?[PHImageResultIsDegradedKey] as? NSNumber)?.boolValue ?? false

@@ -17,15 +17,21 @@ public struct CardStackView: View {
 
     @ObservedObject public var viewModel: CardDeckViewModel
     public let showsControlBar: Bool
+    public let onReturnToLibrary: () -> Void
+    public let onNextMonth: () -> Void
 
     // MARK: - Initialization
 
     public init(
         viewModel: CardDeckViewModel,
-        showsControlBar: Bool = false
+        showsControlBar: Bool = false,
+        onReturnToLibrary: @escaping () -> Void = {},
+        onNextMonth: @escaping () -> Void = {}
     ) {
         self.viewModel = viewModel
         self.showsControlBar = showsControlBar
+        self.onReturnToLibrary = onReturnToLibrary
+        self.onNextMonth = onNextMonth
     }
 
     // MARK: - View Body
@@ -35,7 +41,13 @@ public struct CardStackView: View {
             let visible = viewModel.visibleCards
 
             if visible.isEmpty {
-                EmptyStateView()
+                EmptyStateView(
+                    reviewedCount: viewModel.undoStack.count,
+                    stagedCount: viewModel.stagingStore.snapshot.totalCount,
+                    reclaimedSpace: viewModel.stagingStore.snapshot.formattedSize,
+                    onReturnToLibrary: onReturnToLibrary,
+                    onNextMonth: onNextMonth
+                )
             } else {
                 // 3-Card Sliding Window Stack (Reverse-enumerated so Card 0 renders on top)
                 ZStack {

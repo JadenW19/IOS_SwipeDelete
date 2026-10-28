@@ -75,7 +75,7 @@ private struct PlayerLayerView: UIViewRepresentable {
     func makeUIView(context: Context) -> LayerView {
         let view = LayerView()
         view.isUserInteractionEnabled = false
-        view.playerLayer.videoGravity = .resizeAspectFill
+        view.playerLayer.videoGravity = .resizeAspect
         view.playerLayer.player = player
         return view
     }
@@ -111,11 +111,20 @@ struct AssetMediaView: View {
             Color(.secondarySystemBackground)
 
             if let image {
+                // Soft ambient backdrop filling any letterbox/pillarbox margins
                 Image(decorative: image, scale: 1.0, orientation: .up)
                     .resizable()
                     .scaledToFill()
                     .frame(width: size.width, height: size.height)
+                    .blur(radius: 26)
+                    .overlay(Color.black.opacity(0.35))
                     .clipped()
+
+                // Full uncropped image fit cleanly inside the card bounds
+                Image(decorative: image, scale: 1.0, orientation: .up)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: size.width, height: size.height)
             } else {
                 Image(systemName: asset.mediaType == .video ? "video.fill" : "photo.fill")
                     .font(.system(size: 64, weight: .light))

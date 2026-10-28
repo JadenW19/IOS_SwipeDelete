@@ -47,6 +47,36 @@ public struct MainDeckContainerView: View {
         reviewViewModel.refresh()
     }
 
+    private func advanceToNextCohort() {
+        let buckets = libraryViewModel.monthlyBuckets
+        guard !buckets.isEmpty else {
+            isPresentingMonthPicker = true
+            return
+        }
+
+        // Find the next uncompleted monthly bucket (or the next bucket in order)
+        let currentIndex = buckets.firstIndex { OnThisDay.completionKey(for: $0.identifier) == currentCohortKey }
+        let startIndex = currentIndex.map { $0 + 1 } ?? 0
+
+        let nextBucket: MonthlyBucket? = {
+            if startIndex < buckets.count {
+                if let uncompleted = buckets[startIndex...].first(where: { !completedKeys.contains(OnThisDay.completionKey(for: $0.identifier)) }) {
+                    return uncompleted
+                }
+                return buckets[startIndex]
+            }
+            return buckets.first(where: { !completedKeys.contains(OnThisDay.completionKey(for: $0.identifier)) }) ?? buckets.first
+        }()
+
+        guard let bucket = nextBucket else { return }
+        Task {
+            await libraryViewModel.selectBucket(bucket)
+            if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: bucket.identifier) {
+                loadCohort(assets, key: OnThisDay.completionKey(for: bucket.identifier), title: bucket.title)
+            }
+        }
+    }
+
     public init(
         photoProvider: any PhotoLibraryProviding = PhotoLibraryService(),
         stagingStore: any StagedQueueStoreProtocol = StagedQueueStore(),
@@ -83,7 +113,15 @@ public struct MainDeckContainerView: View {
                 .zIndex(10)
 
                 // Clean Main Swiping Deck
-                CardStackView(viewModel: deckViewModel)
+                CardStackView(
+                    viewModel: deckViewModel,
+                    onReturnToLibrary: {
+                        isPresentingMonthPicker = true
+                    },
+                    onNextMonth: {
+                        advanceToNextCohort()
+                    }
+                )
                     .zIndex(1)
 
                 // Bottom Action Controls Bar
@@ -171,13 +209,17 @@ public struct MainDeckContainerView: View {
         .sheet(isPresented: $isPresentingMonthPicker) {
             cohortSelectorSheet
         }
-        // Keep the review queue (staged count / size) in sync with swipes made by gesture.
-        .onChange(of: deckViewModel.undoStack.count) { _, _ in
+        // Keep the review queue (staged count / size) in sync and persist cohort completion on the final swipe.
+        .onChange(of: deckViewModel.undoStack.count) { _, newCount in
             reviewViewModel.refresh()
+            if deckViewModel.cards.isEmpty && newCount > 0, let key = currentCohortKey {
+                completionStore.markCompleted(key)
+                completedKeys = completionStore.allCompleted
+            }
         }
-        // Mark the current cohort completed once every card has been swiped.
-        .onChange(of: deckViewModel.cards.isEmpty) { _, isEmpty in
-            if isEmpty, let key = currentCohortKey {
+        // Fallback completion observer when the card array transitions to empty.
+        .onChange(of: deckViewModel.cards.count) { oldCount, newCount in
+            if oldCount > 0 && newCount == 0, let key = currentCohortKey {
                 completionStore.markCompleted(key)
                 completedKeys = completionStore.allCompleted
             }
@@ -186,7 +228,9 @@ public struct MainDeckContainerView: View {
             completedKeys = completionStore.allCompleted
             await libraryViewModel.requestAuthorization()
             await libraryViewModel.fetchBuckets()
-            if let first = libraryViewModel.monthlyBuckets.first {
+            let buckets = libraryViewModel.monthlyBuckets
+            let initial = buckets.first(where: { !completedKeys.contains(OnThisDay.completionKey(for: $0.identifier)) }) ?? buckets.first
+            if let first = initial {
                 await libraryViewModel.selectBucket(first)
                 if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: first.identifier) {
                     loadCohort(assets, key: OnThisDay.completionKey(for: first.identifier), title: first.title)
@@ -228,9 +272,16 @@ public struct MainDeckContainerView: View {
                             Spacer()
 
                             if completedKeys.contains(onThisDayKey) {
-                                Image(systemName: "checkmark.seal.fill")
-                                    .foregroundColor(.green)
-                                    .font(.system(size: 16, weight: .bold))
+                                HStack(spacing: 4) {
+                                    Image(systemName: "checkmark.seal.fill")
+                                    Text("Completed")
+                                }
+                                .font(.system(size: 12, weight: .bold, design: .rounded))
+                                .foregroundColor(.green)
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.green.opacity(0.14))
+                                .clipShape(Capsule())
                             } else if currentCohortKey == onThisDayKey {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.accentColor)
@@ -276,9 +327,16 @@ public struct MainDeckContainerView: View {
                                 Spacer()
 
                                 if completedKeys.contains(bucketKey) {
-                                    Image(systemName: "checkmark.seal.fill")
-                                        .foregroundColor(.green)
-                                        .font(.system(size: 16, weight: .bold))
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "checkmark.seal.fill")
+                                        Text("Completed")
+                                    }
+                                    .font(.system(size: 12, weight: .bold, design: .rounded))
+                                    .foregroundColor(.green)
+                                    .padding(.horizontal, 8)
+                                    .padding(.vertical, 4)
+                                    .background(Color.green.opacity(0.14))
+                                    .clipShape(Capsule())
                                 } else if currentCohortKey == bucketKey {
                                     Image(systemName: "checkmark")
                                         .foregroundColor(.accentColor)
