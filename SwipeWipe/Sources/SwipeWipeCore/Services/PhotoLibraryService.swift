@@ -172,7 +172,7 @@ public final class PhotoLibraryService: NSObject, PhotoLibraryProviding, @unchec
         switch category {
         case .screenshots:
             let options = PHFetchOptions()
-            options.predicate = NSPredicate(format: "(mediaSubtype & %d) != 0", PHAssetMediaSubtype.photoScreenshot.rawValue)
+            options.predicate = NSPredicate(format: "(mediaSubtypes & %d) != 0", PHAssetMediaSubtype.photoScreenshot.rawValue)
             options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
             let result = PHAsset.fetchAssets(with: options)
             var models: [PhotoAssetModel] = []
@@ -194,7 +194,7 @@ public final class PhotoLibraryService: NSObject, PhotoLibraryProviding, @unchec
 
         case .bursts:
             let options = PHFetchOptions()
-            options.predicate = NSPredicate(format: "representsBurst == YES OR burstIdentifier != nil")
+            options.predicate = NSPredicate(format: "burstIdentifier != nil")
             let result = PHAsset.fetchAssets(with: options)
             var models: [PhotoAssetModel] = []
             result.enumerateObjects { asset, _, _ in
