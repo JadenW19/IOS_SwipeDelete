@@ -20,6 +20,23 @@ public struct MainDeckContainerView: View {
     @State private var isPresentingMonthPicker: Bool = false
     @State private var selectedTab: Int = 0
 
+    /// Completion tracking for the cohort currently loaded in the deck.
+    @State private var currentCohortKey: String? = nil
+    @State private var currentCohortTitle: String? = nil
+    @State private var completedKeys: Set<String> = []
+    private let completionStore = CompletionStore()
+
+    private var onThisDayAssets: [PhotoAssetModel] {
+        OnThisDay.assets(in: libraryViewModel.monthlyBuckets, on: Date())
+    }
+
+    private func loadCohort(_ assets: [PhotoAssetModel], key: String?, title: String?) {
+        currentCohortKey = assets.isEmpty ? nil : key
+        currentCohortTitle = title
+        deckViewModel.loadCohort(assets)
+        reviewViewModel.refresh()
+    }
+
     public init(
         photoProvider: any PhotoLibraryProviding = PhotoLibraryService(),
         stagingStore: any StagedQueueStoreProtocol = StagedQueueStore(),
@@ -43,7 +60,7 @@ public struct MainDeckContainerView: View {
             VStack(spacing: 0) {
                 // Dynamic Island Adaptive Header
                 DynamicIslandHeaderView(
-                    title: libraryViewModel.selectedBucket?.title ?? "October 2026",
+                    title: currentCohortTitle ?? libraryViewModel.selectedBucket?.title ?? "Photos",
                     progressText: "\(deckViewModel.cards.count) remaining",
                     reclaimedStorageText: reviewViewModel.snapshot.formattedSize,
                     onSelectMonth: {
@@ -61,12 +78,26 @@ public struct MainDeckContainerView: View {
                     ClutterHubView(libraryViewModel: libraryViewModel) { category in
                         Task {
                             if let assets = try? await libraryViewModel.photoProvider.fetchClutterCategory(category) {
-                                deckViewModel.loadCohort(assets)
+                                loadCohort(assets, key: nil, title: category.rawValue)
                                 selectedTab = 0
                             }
                         }
                     }
                     .tag(1)
+
+                    // Tab 2: On This Day
+                    OnThisDayView(
+                        assets: onThisDayAssets,
+                        isCompleted: completedKeys.contains(OnThisDay.completionKey(for: Date()))
+                    ) {
+                        loadCohort(
+                            onThisDayAssets,
+                            key: OnThisDay.completionKey(for: Date()),
+                            title: "On This Day"
+                        )
+                        selectedTab = 0
+                    }
+                    .tag(2)
                 }
                 #if os(iOS)
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -160,7 +191,7 @@ public struct MainDeckContainerView: View {
                         Task {
                             await libraryViewModel.selectBucket(bucket)
                             if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: bucket.identifier) {
-                                deckViewModel.loadCohort(assets)
+                                loadCohort(assets, key: OnThisDay.completionKey(for: bucket.identifier), title: bucket.title)
                             }
                         }
                         isPresentingMonthPicker = false
@@ -178,7 +209,11 @@ public struct MainDeckContainerView: View {
 
                             Spacer()
 
-                            if libraryViewModel.selectedBucket?.id == bucket.id {
+                            if completedKeys.contains(OnThisDay.completionKey(for: bucket.identifier)) {
+                                Image(systemName: "checkmark.seal.fill")
+                                    .foregroundColor(.green)
+                                    .font(.system(size: 16, weight: .bold))
+                            } else if libraryViewModel.selectedBucket?.id == bucket.id {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.accentColor)
                                     .font(.system(size: 14, weight: .bold))
@@ -192,15 +227,28 @@ public struct MainDeckContainerView: View {
                 #endif
             }
         }
+        // Keep the review queue (staged count / size) in sync with swipes made by gesture.
+        .onChange(of: deckViewModel.undoStack.count) { _, _ in
+            reviewViewModel.refresh()
+        }
+        // Mark the current cohort completed once every card has been swiped.
+        .onChange(of: deckViewModel.cards.isEmpty) { _, isEmpty in
+            if isEmpty, let key = currentCohortKey {
+                completionStore.markCompleted(key)
+                completedKeys = completionStore.allCompleted
+            }
+        }
         .task {
+            completedKeys = completionStore.allCompleted
             await libraryViewModel.requestAuthorization()
             await libraryViewModel.fetchBuckets()
             if let first = libraryViewModel.monthlyBuckets.first {
                 await libraryViewModel.selectBucket(first)
                 if let assets = try? await libraryViewModel.photoProvider.fetchAssets(for: first.identifier) {
-                    deckViewModel.loadCohort(assets)
+                    loadCohort(assets, key: OnThisDay.completionKey(for: first.identifier), title: first.title)
                 }
             }
+            await OnThisDayNotifier.scheduleUpcoming(buckets: libraryViewModel.monthlyBuckets)
         }
     }
 }
