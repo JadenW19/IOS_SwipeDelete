@@ -25,7 +25,7 @@ public struct PhotoCardView: View {
     // MARK: - Layout Constants
 
     private let cardWidth: CGFloat = 353.0
-    private let cardHeight: CGFloat = 560.0
+    private let cardHeight: CGFloat = 588.0
     private let cornerRadius: CGFloat = 24.0
 
     // MARK: - Initialization

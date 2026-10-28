@@ -2,7 +2,8 @@
 //  AssetMediaView.swift
 //  SwipeWipeApp
 //
-//  Loads and renders the real photo (or video poster + muted looping playback) for a card.
+//  Loads and renders the real photo or video (with audio, play/pause, mute toggle,
+//  and interactive scrubbing bar) for a swipe card.
 //
 
 import SwiftUI
@@ -62,7 +63,7 @@ private func loadPlayerItem(localIdentifier: String) async -> UncheckedBox<AVPla
     }
 }
 
-/// UIKit-backed video layer (no hit testing, so the card's drag gesture keeps working).
+/// UIKit-backed video layer (no hit testing on the layer itself so card swipes still work).
 private struct PlayerLayerView: UIViewRepresentable {
     let player: AVPlayer
 
@@ -96,6 +97,15 @@ struct AssetMediaView: View {
     @State private var player: AVPlayer?
     @State private var didFail = false
 
+    // Video playback & scrubbing state
+    @State private var isPlaying: Bool = true
+    @State private var isMuted: Bool = false
+    @State private var currentTime: Double = 0.0
+    @State private var totalDuration: Double = 1.0
+    @State private var isScrubbing: Bool = false
+
+    private let progressTimer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
+
     var body: some View {
         ZStack {
             Color(.secondarySystemBackground)
@@ -119,12 +129,15 @@ struct AssetMediaView: View {
                         .frame(width: size.width, height: size.height)
                         .clipped()
                         .allowsHitTesting(false)
-                }
-                if player == nil {
+
+                    // Interactive video controls overlay (scrubber + play/pause + mute)
+                    videoControlsOverlay(player: player)
+                } else if player == nil {
                     Image(systemName: "play.circle.fill")
                         .font(.system(size: 52))
                         .foregroundColor(.white.opacity(0.85))
                         .shadow(radius: 6)
+                        .allowsHitTesting(false)
                 }
             }
         }
@@ -135,16 +148,136 @@ struct AssetMediaView: View {
         .task(id: "\(asset.id)-\(isTopCard)") {
             await updatePlayback()
         }
+        .onReceive(progressTimer) { _ in
+            guard isTopCard, !isScrubbing, let player else { return }
+            let sec = player.currentTime().seconds
+            if sec.isFinite && sec >= 0 {
+                currentTime = sec
+            }
+            if let itemDuration = player.currentItem?.duration.seconds,
+               itemDuration.isFinite && itemDuration > 0 {
+                totalDuration = itemDuration
+            }
+        }
         .onReceive(NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)) { note in
             guard let player, let item = note.object as? AVPlayerItem, item === player.currentItem else { return }
             player.seek(to: .zero)
-            player.play()
+            if isPlaying {
+                player.play()
+            }
         }
         .onDisappear {
             player?.pause()
             player = nil
         }
     }
+
+    // MARK: - Video Scrubber & Audio Controls
+
+    @ViewBuilder
+    private func videoControlsOverlay(player: AVPlayer) -> some View {
+        VStack {
+            Spacer()
+
+            HStack(spacing: 10) {
+                // Play / Pause button
+                Button(action: {
+                    if isPlaying {
+                        player.pause()
+                        isPlaying = false
+                    } else {
+                        player.play()
+                        isPlaying = true
+                    }
+                }) {
+                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 28, height: 28)
+                        .background(Color.white.opacity(0.2))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+
+                // Interactive Scrubber Track
+                GeometryReader { geo in
+                    let width = max(1.0, geo.size.width)
+                    let progress = min(max(currentTime / max(totalDuration, 0.1), 0.0), 1.0)
+
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(Color.white.opacity(0.3))
+                            .frame(height: 5)
+
+                        Capsule()
+                            .fill(Color.white)
+                            .frame(width: width * CGFloat(progress), height: 5)
+
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 14, height: 14)
+                            .shadow(color: .black.opacity(0.35), radius: 2, x: 0, y: 1)
+                            .offset(x: max(0, min(width - 14, width * CGFloat(progress) - 7)))
+                    }
+                    .frame(maxHeight: .infinity)
+                    .contentShape(Rectangle())
+                    .highPriorityGesture(
+                        DragGesture(minimumDistance: 0)
+                            .onChanged { value in
+                                isScrubbing = true
+                                let fraction = min(max(Double(value.location.x / width), 0.0), 1.0)
+                                let targetSeconds = fraction * max(totalDuration, 0.1)
+                                currentTime = targetSeconds
+                                let cmTime = CMTime(seconds: targetSeconds, preferredTimescale: 600)
+                                player.seek(to: cmTime, toleranceBefore: .zero, toleranceAfter: .zero)
+                            }
+                            .onEnded { _ in
+                                isScrubbing = false
+                                if isPlaying {
+                                    player.play()
+                                }
+                            }
+                    )
+                }
+                .frame(height: 28)
+
+                // Elapsed / Total Timestamp
+                Text("\(formatTime(currentTime))/\(formatTime(totalDuration))")
+                    .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                    .foregroundColor(.white)
+                    .fixedSize(horizontal: true, vertical: false)
+
+                // Mute / Unmute button
+                Button(action: {
+                    isMuted.toggle()
+                    player.isMuted = isMuted
+                }) {
+                    Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(width: 28, height: 28)
+                        .background(Color.white.opacity(0.2))
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.black.opacity(0.55))
+            .clipShape(Capsule())
+            .padding(.horizontal, 16)
+            // Sit cleanly above the bottom metadata rows (date + size badges)
+            .padding(.bottom, 86)
+        }
+    }
+
+    private func formatTime(_ seconds: Double) -> String {
+        guard seconds.isFinite && seconds >= 0 else { return "0:00" }
+        let total = Int(seconds.rounded())
+        return String(format: "%d:%02d", total / 60, total % 60)
+    }
+
+    // MARK: - Data Loading
 
     private func loadImage() async {
         guard let provider else { didFail = true; return }
@@ -170,9 +303,15 @@ struct AssetMediaView: View {
             return
         }
         guard player == nil, let box = await loadPlayerItem(localIdentifier: asset.localIdentifier) else { return }
-        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .moviePlayback, options: [.mixWithOthers])
+        // Configure audio session for video playback with sound
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [.mixWithOthers])
+        try? AVAudioSession.sharedInstance().setActive(true)
+
         let newPlayer = AVPlayer(playerItem: box.value)
-        newPlayer.isMuted = true
+        newPlayer.isMuted = isMuted
+        totalDuration = max(asset.duration, 1.0)
+        currentTime = 0.0
+        isPlaying = true
         newPlayer.play()
         player = newPlayer
     }
@@ -260,4 +399,3 @@ struct AssetMediaView: View {
 }
 
 #endif
-
